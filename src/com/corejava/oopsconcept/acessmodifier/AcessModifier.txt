@@ -1,0 +1,27 @@
+Access Modifiers in Java
+________________________________________
+🎯 Real-World Interview Questions on Access Modifiers (Java, 4 Years Exp)
+🔹 Core Understanding
+1.	What are the different access modifiers in Java and how do they affect class, method, and variable visibility?
+2.	Can a class be private in Java? Why or why not?
+3.	What happens if you don't specify any access modifier? What is the default visibility?
+________________________________________
+🔹 OOP and Design Questions
+4.	You’re designing a class with internal helper methods. Which access modifier will you use for those methods and why?
+5.	In a large application, you want some fields to be modifiable only within the class. Which access modifier will you use and how will other classes access them if needed?
+6.	Can you explain how access modifiers support encapsulation in OOP?
+________________________________________
+🔹 Package & Inheritance Use Cases
+7.	How does protected differ from default/package-private in terms of inheritance?
+8.	Can a subclass in a different package access a protected member of a superclass? Show with an example.
+9.	How would you design a utility class in Java with constants and helper methods so it can be reused across packages but not instantiated?
+________________________________________
+🔹 Practical Scenarios
+10.	Suppose you have a base class Employee in one package and a subclass Manager in another. How would you expose certain fields only to subclasses but not to unrelated classes?
+11.	You're working in a microservices codebase where several modules use shared DTOs. What access modifiers would you choose for fields and methods in those DTOs?
+________________________________________
+🔹 Trick/Advanced Questions
+12.	Can a protected method be overridden with a public modifier? Explain why it's allowed.
+13.	Can an outer class be protected in Java? Why or why not?
+14.	What is the accessibility of an inner private static class and when would you use it?
+15.	How do access modifiers behave in interfaces (Java 8+)? Can you have private methods in interfaces?
