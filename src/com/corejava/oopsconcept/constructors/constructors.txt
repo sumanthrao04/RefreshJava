@@ -1,0 +1,39 @@
+🔹 Deep-Dive Constructor Interview Questions
+✅ Basic-Level
+1.	What is a constructor and how does it differ from a method in Java?
+2.	Can a constructor be final, static, or synchronized?
+3.	What happens if you don’t define any constructor in a class?
+4.	Can constructors be inherited? Why or why not?
+5.	Can you make a constructor private? When is this useful?
+________________________________________
+✅ Intermediate-Level
+6.	Explain constructor overloading with an example.
+7.	What is constructor chaining in Java? How is it implemented?
+8.	How does the this() keyword work in constructor chaining?
+9.	Can you call a constructor from a method? Why or why not?
+10.	What is the role of super() in a constructor?
+o	When does it get called?
+o	What happens if you don’t explicitly write super()?
+________________________________________
+✅ Advanced-Level / Real-World Use Cases
+11.	How are constructors used in dependency injection in Spring?
+12.	Why is constructor injection preferred over setter injection in Spring?
+13.	Explain a situation where you used a constructor to enforce business rules.
+14.	You have a class with 6 required and 3 optional fields. How would you design the constructor?
+o	Expect answer: Builder pattern, or constructor chaining with overloads.
+15.	What are telescoping constructors? How do you avoid them?
+16.	How do constructors help in creating immutable classes in Java?
+17.	How does the JVM know which constructor to call at runtime?
+18.	What will happen if you call this() and super() in the same constructor?
+o	(Answer: Compilation error — must be the first statement)
+19.	Can we define a constructor in an abstract class? Can we instantiate it directly?
+o	(Yes to defining, No to instantiating)
+20.	How do constructors behave in inheritance when there is no default constructor in the parent class?
+________________________________________
+✅ Practical Scenario-Based Questions
+21.	You are using Lombok in a project. How does Lombok generate constructors and how do you customize it?
+22.	Can you provide an example of constructor misuse you've seen in code, and how you corrected it?
+23.	In a microservice, how would you design a DTO class that needs validation logic on creation?
+o	(Expected: Use constructor with validations or factory methods)
+24.	Is it a good practice to perform business logic inside constructors? Why or why not?
+25.	Have you ever used a factory method or builder pattern to replace constructors? Why was it necessary?

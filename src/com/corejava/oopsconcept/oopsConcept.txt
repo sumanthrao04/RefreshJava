@@ -1,0 +1,51 @@
+1.	What is the difference between a class and an object in Java?
+2.	How does Java support Object-Oriented Programming through classes and objects?
+3.	Can a Java class exist without creating any object?
+4.	What are the key components of a class in Java?
+5.	Can you give an example of how you used classes and objects in a real-world project?
+6.	What is the default value of object references in Java?
+7.	How is memory allocated for objects in Java?
+8.	What is the significance of constructors in object creation?
+9.	How would you model a banking system using classes and objects?
+10.	How do classes and objects help in code reusability and maintainability?
+________________________________________
+🔹 Core Java Interview Questions on Classes and Objects
+1.	What are the differences between a class and an object in Java?
+2.	Can a class have multiple constructors? Explain constructor overloading.
+3.	What is the role of the this keyword in object context?
+4.	What is the difference between a class variable and an instance variable?
+5.	What happens if you try to access a non-static member from a static context?
+6.	How does Java handle object memory allocation and garbage collection?
+7.	What is the use of new keyword in Java? What happens behind the scenes when you create an object?
+8.	Explain the difference between object reference and object itself.
+9.	How does the Java memory model work in the context of objects and classes?
+10.	Can you instantiate an abstract class? How does that relate to object creation?
+________________________________________
+🔹 OOP Design and Practical Use
+11.	In your last project, how did you design your classes? What guided your decisions?
+12.	How do you decide when to create a new class?
+13.	What is the difference between composition and inheritance? When would you use one over the other?
+14.	How do you implement encapsulation in Java? Why is it important for objects?
+15.	Have you ever implemented a custom class loader or overridden Object methods like equals() and hashCode()?
+16.	Explain the has-a and is-a relationships with examples.
+17.	What are POJOs and why are they commonly used in Java applications?
+18.	What’s the purpose of the final keyword on a class, method, or object reference?
+19.	Can two different objects of the same class have different states? Explain.
+20.	How would you model a real-world scenario (e.g., ATM, BookStore, Hospital) using classes and objects?
+________________________________________
+🔹 Advanced Object-Oriented Concepts
+21.	What is object immutability? How do you create an immutable class in Java?
+22.	Can you explain method overloading vs method overriding in the context of objects?
+23.	What are inner classes, and when would you use them?
+24.	How do objects interact in a multi-threaded environment? What are thread-safety concerns?
+25.	How do serialization and deserialization work in Java? What happens to transient fields?
+26.	Explain how polymorphism is achieved using objects.
+27.	What’s the difference between shallow copy and deep copy of an object?
+28.	What are some design patterns you’ve implemented using classes and objects? (e.g., Singleton, Factory, Builder)
+________________________________________
+🔹 Behavioral Questions with Object/Design Focus
+29.	Can you describe a class you designed in a past project and the thought process behind it?
+30.	Have you faced issues with tight coupling between classes? How did you resolve it?
+31.	How do you refactor a class that’s doing too many things?
+32.	What’s your approach to unit testing a class? Do you mock dependent objects?
+33.	Have you used interfaces or abstract classes in your design? Why and when?

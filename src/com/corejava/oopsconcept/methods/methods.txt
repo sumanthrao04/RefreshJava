@@ -1,0 +1,28 @@
+ Java method-focused interview questions
+________________________________________
+✅ Java Methods – Interview Question Bank
+🔹 Basic-Level Questions
+1.	What is the purpose of a method in Java?
+2.	How are parameters passed to a method in Java – by value or by reference?
+3.	What’s the difference between a method and a constructor?
+4.	Can a method return multiple values?
+5.	What is method overloading? Give real-world examples.
+6.	What is method overriding? How is it useful in OOP?
+7.	What is the default return type of a method in Java?
+________________________________________
+🔹 Intermediate-Level Questions
+8.	Can you override a private method? Why or why not?
+9.	What is the difference between static, final, and abstract methods?
+10.	How does access modifier (public/private/protected/default) affect method visibility?
+11.	What are varargs? When would you use them?
+12.	Can a method be synchronized and static at the same time? What does that mean?
+13.	What happens if two methods have the same name and parameters but different return types?
+________________________________________
+🔹 Advanced-Level Questions (4+ Years Experience)
+14.	How does method resolution work with interfaces that have default methods and a class with the same method?
+15.	How would you design a method that’s reusable across multiple services?
+16.	How would you use Java Reflection API to inspect methods at runtime?
+17.	What is tail recursion? Does Java optimize it?
+18.	What are functional interfaces and how do methods behave in them?
+19.	Can a method throw multiple exceptions? How do you handle that cleanly?
+20.	How would you design a method to handle both sync and async operations cleanly?
