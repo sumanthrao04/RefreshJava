@@ -1,0 +1,110 @@
+
+Beginner-Level
+What is polymorphism in Java? How is it achieved?
+
+Differentiate between compile-time and runtime polymorphism.
+
+Give an example of method overloading and explain when you’d use it.
+
+Why does Java not support operator overloading like C++?
+---------------------------------------------------------------------------------
+Intermediate-Level (Experience-Oriented)
+Can you override a static method in Java? Explain with an example.
+
+How does JVM decide which overridden method to call at runtime?
+
+What happens if a subclass overloads instead of overrides a method?
+
+How does polymorphism affect performance and memory usage?
+
+How does polymorphism work internally (e.g., method table, dynamic dispatch)?
+------------------------------------------------------------------------------------------
+Real-World Scenario Questions
+In a microservices application, how would you use polymorphism to abstract different message processors (Kafka, RabbitMQ, IBM MQ)?
+
+Describe a scenario where polymorphism simplified your codebase significantly.
+
+Have you used interfaces in a Spring Boot project to enable polymorphism? How?
+
+How does polymorphism help in implementing the Open/Closed Principle from SOLID?
+
+Have you ever misused polymorphism? What issues did it cause and how did you fix it?
+----------------------------------------------------------------------------------------
+Advanced Java Polymorphism Interview Questions
+🔄 Method Overloading and Overriding
+Can you overload a method by just changing its return type? Why or why not?
+
+What is the difference between overloading and overriding with respect to exception handling?
+
+Can an overridden method throw a broader checked exception than the base method?
+
+Can you override a method marked final, static, or private? Why?
+
+How is polymorphism affected by access modifiers like private and protected?
+
+----------------------------------------------------------------------------------------
+
+🧰 JVM & Runtime Behavior
+What is dynamic method dispatch and how is it implemented by JVM?
+
+What role does the method table (vtable) play in polymorphism?
+
+Explain how the type of the reference vs. the object determines method execution.
+
+What happens if the base class has a method, but the subclass does not override it?
+
+How are polymorphic method calls optimized by the JIT compiler?
+----------------------------------------------------------------------------------------
+
+🧱 Real-World Scenarios & Best Practices
+In a plugin-based system, how does polymorphism help in loading and executing plugins?
+
+How would you use polymorphism in a REST API service layer?
+
+How does the Spring Framework use polymorphism in dependency injection?
+
+Explain how you’ve used polymorphism to implement Open/Closed Principle in your projects.
+
+Have you used the Template Method or Strategy Pattern? How do they use polymorphism?
+
+----------------------------------------------------------------------------------------
+🔥 Trick & Gotcha Questions
+What is the output of calling an overridden method in a constructor? Why is this discouraged?
+
+Can you override a method with a covariant return type? What does that mean?
+
+If you call a method using a base class reference that points to a subclass, which version runs: base or subclass?
+
+How does Java support polymorphism with interfaces having default methods?
+
+Why is it not polymorphism when you assign a subclass object to a superclass variable and call a static method?
+
+----------------------------------------------------------------------------------------
+📦 Polymorphism in Collections & Generics
+How does polymorphism work with Java Collections (e.g., List, Set, Map interfaces)?
+
+Can we use polymorphism with generics? What issues might arise (type erasure)?
+
+What is PECS (Producer Extends, Consumer Super) and how does it relate to polymorphism?
+
+What happens if you use a wildcard (?) vs. a generic type in a method parameter?
+----------------------------------------------------------------------------------------
+
+🧪 Real Code-Based or Situational Questions
+Implement a report generator with CSV, PDF, and Excel formats using polymorphism.
+
+How would you refactor an if-else or switch heavy code block into polymorphic classes?
+
+Given a NotificationService, how would you apply polymorphism to support multiple channels dynamically?
+
+Design a system where discounts are applied based on customer type (New, Loyal, VIP). Explain using polymorphism.
+
+You have a common interface DataFetcher implemented by APIFetcher and DBFetcher. How can a polymorphic design allow for easily swapping implementations during testing or production?
+
+----------------------------------------------------------------------------------------
+💬 Behavioral + Technical Questions
+Tell me about a bug or issue that arose due to incorrect use of polymorphism.
+
+Describe a situation where avoiding polymorphism led to tightly coupled code. How did you improve it?
+
+How does polymorphism contribute to testability and extensibility of your code?

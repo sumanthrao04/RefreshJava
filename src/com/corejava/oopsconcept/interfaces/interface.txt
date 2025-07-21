@@ -1,0 +1,27 @@
+🔹 Basics & Syntax
+1.	What is the purpose of using interfaces in Java?
+2.	How is an interface different from an abstract class?
+3.	Can an interface have instance variables? Why or why not?
+4.	Can a class implement multiple interfaces? What happens if two interfaces have a method with the same signature?
+5.	What happens if a class doesn't implement all the methods of an interface?
+________________________________________
+🔹 Java 8+ Interface Features
+6.	Can an interface have a default method? Give a use case.
+7.	What is the use of static methods inside interfaces in Java 8?
+8.	Can we override a default method in the implementing class?
+9.	How does Java handle the diamond problem with default methods?
+10.	Explain functional interfaces and how they are used in Java 8 (e.g., Runnable, Comparable).
+________________________________________
+🔹 Design & Architecture Use Cases
+11.	How do interfaces support loose coupling in Java applications?
+12.	Can you explain a real-world scenario where you used interfaces in your project?
+13.	What’s the benefit of programming to an interface rather than an implementation?
+14.	How do interfaces help in designing a plugin system or strategy pattern?
+15.	How do dependency injection frameworks like Spring use interfaces?
+________________________________________
+🔹 Advanced & Scenario-Based
+16.	If two interfaces have the same method signature, and you implement both, how do you resolve conflicts?
+17.	Suppose you are designing a payment gateway system — how would you use interfaces to support multiple payment providers (e.g., PayPal, Stripe)?
+18.	How does the use of interfaces align with the SOLID principles, particularly the Interface Segregation Principle?
+19.	How would you use interfaces in a microservices architecture?
+20.	Can an interface extend another interface? How is that used in real systems?

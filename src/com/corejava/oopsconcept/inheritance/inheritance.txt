@@ -1,0 +1,25 @@
+🔹 Basic Understanding
+1.	What is inheritance in Java? How is it implemented?
+2.	What is the difference between extends and implements in Java?
+3.	Can a class inherit from multiple classes in Java? If not, why?
+4.	What is the role of the super keyword in inheritance?
+-------------------------------------------------------------------
+🔹 Intermediate & Real-World Design Questions
+5.	Imagine you're building a library system. You have Book, Magazine, and DVD. How would you use inheritance to structure these entities?
+6.	In your current/previous project, where have you used inheritance effectively? Could you walk through the design?
+7.	When would you prefer composition over inheritance? Give an example from a real-world scenario.
+8.	Have you ever refactored a class hierarchy because inheritance was misused? What did you do and why?
+----------------------------------------------------------------------
+🔹 Overriding and Polymorphism
+9.	How does method overriding relate to inheritance? Can a child class override static or private methods?
+10.	What happens when you cast a subclass to a superclass? How does Java decide which method to execute at runtime?
+11.	How does inheritance support runtime polymorphism? Give a practical example.
+12.	What is object slicing in the context of inheritance? Is it relevant in Java?
+------------------------------------------------------------------------------------
+🔹 Advanced/Design Scenarios
+13.	If you were designing a payment system (CreditCard, PayPal, UPI), how would you model inheritance or interfaces?
+14.	Have you ever faced an issue with tight coupling due to inheritance? How did you resolve it?
+15.	What’s your opinion on using abstract classes vs interfaces in an inheritance hierarchy?
+16.	In Spring Boot, how does inheritance come into play with base controller or service classes? Have you done something similar?
+
+    
