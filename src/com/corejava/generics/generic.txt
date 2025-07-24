@@ -1,0 +1,23 @@
+1. What are generics in Java?
+2. What are the benefits of using generics?
+3. How do generics ensure type safety?
+4. Can you explain type erasure and its impact on generics?
+5. What are the differences between bounded and unbounded wildcards?
+6. What is the difference between `? extends T` and `? super T`?
+7. Can you create a generic class and explain its components?
+8. How do you define a generic method? Provide an example.
+9. What are the limitations of using generics in Java?
+10. Can you explain the concept of reification in the context of Java generics?
+11. Why can’t you use primitive types with generics? How do you work around this limitation?
+12. What is a raw type? Why should raw types be avoided?
+13. Can you provide an example of using generics with collections in Java?
+14. How do generics affect the use of reflection in Java?
+15. What are the differences between `Comparable` and `Comparator` interfaces in the context of generics?
+16. Can you use generics with arrays? Why or why not?
+17. How can you create a generic singleton?
+18. What are type tokens and how are they used in Java generics?
+19. How do you handle generic type parameters in a constructor?
+20. Can you override a method that uses generics? Provide an example.
+
+Wildcard Comparison Table notes
+Diamond operator in generics - Java 7
