@@ -1,4 +1,225 @@
  Java method-focused interview questions
+---------------------------------------------------------
+1.Types of Methods in Java
+ Instance Method: Requires an object of the class. Accessed methods though  instance variables.
+ Static Method: Belongs to the class, not the object. Accessed via class name.
+ Final Method: Cannot be overridden by subclasses.
+ Abstract Method: Declared without implementation. Must be implemented in subclasses.
+ Synchronized Method: Used to handle thread safety; only one thread can access it at a time.
+ Native Method: Declared in Java but implemented in another language like C/C++.
+
+2. Method Overloading vs Overriding
+    Overloading: Same method name, different parameters (compile-time polymorphism).
+    Overriding: Subclass redefines a method from the superclass with same signature (runtime polymorphism).
+    Requires @Override and Only instance methods are overridden (not static)
+
+3. Return Type of Constructor
+    Constructors don't have a return type, not even void.
+    Their job is to initialize the object, not return it.
+
+4. == vs .equals()
+    ==  Compares reference.
+    .equals() Compares content.
+
+5. Varargs (...)
+    Allows variable number of arguments
+    You can only have one varargs parameter, and it must be the last one.
+
+6. What is the purpose of a method in Java?
+    * The primary purpose of a method in Java is to encapsulate a block of logic that performs a specific, well-defined task, enabling code reuse, abstraction, and modular design—all of which are foundational principles of object-oriented programming
+    * In a real-world software system, code bases become large and complex very quickly. By using methods, I can logically divide the functionality into small, reusable, and testable units, which improves both readability and maintainability.
+    * For example, if I have a method to validate user input, I can call that method from multiple parts of the application instead of duplicating the logic everywhere.
+    * Moreover, methods promote abstraction. As a developer, I often focus on what a method does rather than how it does it. This leads to cleaner and more understandable code, especially when working in teams where different developers work on different components.
+    * Finally, from a software engineering standpoint, methods are essential for unit testing, because they allow me to isolate behavior and validate it independently. If something breaks, I know exactly which method to look at, rather than digging through hundreds of lines of procedural code.
+    * So in short, methods in Java are not just about saving lines of code—they’re about writing clean, maintainable, and scalable software."
+
+7. How are parameters passed to a method in Java – by value or by reference?
+    * In Java, all method parameters are passed strictly by value—including objects. But what makes this confusing is how Java handles object references
+    * When I pass a primitive type like int or double to a method, a copy of the value is passed. Any change inside the method does not affect the original variable.
+    * However, when I pass an object, what gets passed is the copy of the reference (or pointer) to that object—not the object itself.
+    * If I use that reference to modify the object's internal state, the change is visible outside the method.
+    * But if I reassign the reference itself to point to a new object, that change is not reflected outside the method, because the caller still holds the original reference
+
+8. How would you prevent accidental side effects when passing objects to method
+    * In critical systems, I avoid side effects by either working on a copy of the input or designing the method to return a new result rather than changing the original. This makes the code more predictable, thread-safe, and easier to test
+
+9. What’s the difference between a method and a constructor in Java
+    * While both methods and constructors in Java look similar in syntax, they serve entirely different purposes in object-oriented programming
+    * Constructor: Used to create and initialize an object and Method: Used to define the behavior of an object after it has been created.
+    * I see constructors as the 'birth event' of an object—they bring the object into existence and give it a valid initial state. Methods, on the other hand, define what that object can do throughout its lifetime.
+    *  constructors focus solely on object setup, and methods focus on behavior and logic
+
+        | Feature               | Constructor                                    | Method                                       |
+        | --------------------- | ---------------------------------------------- | -------------------------------------------- |
+        | **Purpose**           | Instantiates and initializes an object         | Defines behavior / business logic            |
+        | **Name**              | Must match the class name exactly              | Can be any valid identifier                  |
+        | **Return type**       | No return type—not even `void`                 | Must have a return type (can be `void`)      |
+        | **Called when**       | Automatically when object is created via `new` | Called explicitly on an object               |
+        | **Can be inherited?** | No, not inherited                              | Yes, methods can be inherited and overridden |
+        | **Overloading**       | Yes, multiple constructors allowed             | Yes, method overloading supported            |
+
+
+10. Can a method return multiple values?
+    * Yes, a method can return multiple values in Java—but not directly, since Java doesn’t support native tuple/multiple return types like Python or JavaScript. However, with the right design techniques, it’s easy to simulate multiple return values cleanly.
+    * Approach 1: Return a Custom Class (POJO or Record)
+    * Java 14+ Record -> Using records gives me immutability and boilerplate-free design for return types
+    * Approach 2: Use Map, List, or Array (Generic / Quick) -> These are quick and flexible, but I avoid them in production-level APIs because they sacrifice type safety and readability
+
+Example
+
+    record Result(int sum, int product) {}
+
+    Result compute(int a, int b) {
+        return new Result(a + b, a * b);
+    }
+
+
+
+
+11.What is method overloading? Give real-world examples.
+    * Method overloading in Java is a form of compile-time polymorphism where multiple methods share the same name but differ in their parameter lists—either by number, type, or order of parameters. It helps improve code readability and usability, allowing methods to behave differently based on the input they receive.
+    * Rules of Method Overloading -> Same method name, Different parameter signature[Different number of parameters, Different types of parameters, Different order of parameters (if types differ)] , Return type does NOT matter for overloading
+
+Example
+
+    public class PaymentProcessor {
+
+        // Pay by amount only
+        public void pay(double amount) {
+            System.out.println("Paid $" + amount + " in cash.");
+        }
+
+        // Pay with card
+        public void pay(String cardNumber, double amount) {
+            System.out.println("Paid $" + amount + " using card " + cardNumber);
+        }
+
+        // Pay with card and CVV
+        public void pay(String cardNumber, int cvv, double amount) {
+            System.out.println("Paid $" + amount + " using card " + cardNumber + " and CVV " + cvv);
+        }
+    }
+
+Usage:
+
+PaymentProcessor processor = new PaymentProcessor();
+processor.pay(100.0);                               // cash
+processor.pay("1234-5678-9012", 200.0);             // card
+processor.pay("1234-5678-9012", 123, 300.0);        // card + CVV
+
+* This is a real-world scenario where overloading improves the usability of the pay() method—depending on the information available
+
+
+12. How does the compiler resolve overloaded methods when ambiguous inputs like null are passed?
+ * When overloaded methods accept reference types, and we pass null as an argument, the Java compiler uses the most specific applicable method. But if there's ambiguity—meaning more than one method matches equally well—the compiler throws a compile-time error. This is because it can't determine which version to choose unambiguously.
+ * The compiler uses the concept of most specific method in method overloading. If one method parameter is a subtype of the others, it picks the most specific one. But if two or more candidates are equally specific and compatible with null, Java cannot decide, and throws a compile-time error to avoid unsafe resolution.
+ * In APIs where null is a valid input, I either avoid overloads with non-related reference types or document clearly how null is handled. Better yet, I use Optional to signal the intent explicitly and prevent ambiguity altogether.
+
+ Example
+
+ import java.util.Optional;
+
+ public class OverloadResolutionWithNull {
+
+     // --- Overloaded methods ---
+     public void print(String s) {
+         System.out.println("String version called");
+     }
+
+     public void print(Object o) {
+         System.out.println("Object version called");
+     }
+
+     public void print(StringBuilder sb) {
+         System.out.println("StringBuilder version called");
+     }
+
+     // --- Optional-based method ---
+     public void print(Optional<String> optionalStr) {
+         if (optionalStr.isPresent()) {
+             System.out.println("Optional value: " + optionalStr.get());
+         } else {
+             System.out.println("Optional is empty");
+         }
+     }
+
+     public static void main(String[] args) {
+         OverloadResolutionWithNull demo = new OverloadResolutionWithNull();
+
+         System.out.println("== Case 1: null with String & Object overloads ==");
+         demo.print(null);  // ✅ Output: String version called
+
+         System.out.println("\n== Case 2: null with String, Object, and StringBuilder ==");
+         // ❌ The below line will not compile (AMBIGUITY)
+         // demo.print(null); // Uncommenting this line will cause: reference to print is ambiguous
+
+         System.out.println("\n== Case 3: Using explicit cast to resolve ambiguity ==");
+         demo.print((String) null);          // ✅ Output: String version called
+         demo.print((StringBuilder) null);   // ✅ Output: StringBuilder version called
+         demo.print((Object) null);          // ✅ Output: Object version called
+
+         System.out.println("\n== Case 4: Using Optional to avoid null ambiguity ==");
+         demo.print(Optional.of("Hello"));   // ✅ Output: Optional value: Hello
+         demo.print(Optional.empty());       // ✅ Output: Optional is empty
+     }
+ }
+
+
+13. What is method overriding? How is it useful in OOP?
+    * Method overriding is a core feature of runtime polymorphism in Java and object-oriented programming. It allows a subclass to provide a specific implementation of a method that is already defined in its superclass, using the same method signature—name, return type, and parameters.
+    * Syntax Rules for Overriding:
+            * Method must have same name, return type, and parameters as in the superclass.
+            * The method must be inherited from the superclass (i.e., not private, static, or final).
+            * The access level cannot be more restrictive than the overridden method.(When you override a method in a subclass, you must maintain or widen the access level, but you cannot make it more restrictive than the method you're overriding)
+            * Use of @Override annotation is recommended to catch errors at compile time.
+
+    * Why is Method Overriding Useful in OOP?
+           * Runtime Polymorphism - Overriding enables dynamic method dispatch, where the method that gets called is determined at runtime based on the object type—not the reference type. This allows flexible and extensible code structures.
+           * Extensibility and Customization - Overriding allows subclasses to customize or completely change inherited behavior—essential in frameworks, base classes, and libraries where subclasses adapt behavior to specific needs
+           * Improves Code Reuse - The superclass provides general behavior, and subclasses override only the necessary parts—reducing duplication and making the design cleaner and DRY."
+
+
+14. Method Overloading vs Method Overriding in Java
+
+    | Feature                   | **Method Overloading**                                       | **Method Overriding**                                     |
+    | ------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+    | **Definition**            | Same method name, different parameters in the **same class** | Same method signature in **subclass**, redefines behavior |
+    | **Polymorphism Type**     | **Compile-time polymorphism** (static binding)               | **Runtime polymorphism** (dynamic binding)                |
+    | **Inheritance Required?** |    No                                                        |   Yes — works only in subclass                            |
+    | **Return Type**           | Can be different (but not used to distinguish methods)       | Must be same or **covariant** (subtype)                   |
+    | **Parameter List**        | Must be different (number, type, or order)                   | Must be **exactly the same**                              |
+    | **Access Modifiers**      | Can vary freely                                              | Cannot be more restrictive than the parent method         |
+    | **Static Methods**        | Can be overloaded                                            | Cannot be truly overridden — **they are hidden**          |
+    | **Private/Final Methods** | Can be overloaded                                            | Cannot be overridden                                      |
+
+
+15. What is the default return type of a method in Java?
+    * In Java, there is no 'default' return type for methods. Every method must explicitly declare a return type—unless it’s a constructor. If a method is not meant to return anything, the return type must be explicitly declared as void
+    * Some developers mistakenly think void is the default return type But in reality, if you omit a return type entirely, Java will throw a compile-time error—because the compiler requires every method to clearly define what it returns.
+
+ | **Category**               | **Return Type**                                                      | **Example**                         | **Description**                                          |
+ | -------------------------- | -------------------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------- |
+ | **Void (no value)**        | `void`                                                               | `public void logInfo()`             | Method performs an action but returns nothing            |
+ | **Primitive Types**        | `int`, `double`, `char`, `boolean`, `long`, `short`, `byte`, `float` | `public int getAge()`               | Returns a primitive value                                |
+ | **Object/Reference Types** | `String`, `Integer`, `List`, `Map`, Custom Classes                   | `public String getName()`           | Returns an object or reference type                      |
+ | **Array Types**            | `int[]`, `String[]`, `Object[]`                                      | `public int[] getScores()`          | Returns an array of values                               |
+ | **Generic Types**          | `T`, `List<T>`, `Map<K, V>`                                          | `public <T> T getValue()`           | Used in generic methods/classes for type flexibility     |
+ | **Custom Classes**         | Your class name                                                      | `public Employee getEmployee()`     | Returns an instance of a custom-defined class            |
+ | **Record Types**           | `record` (Java 14+)                                                  | `public RecordName getResult()`     | Lightweight, immutable data carriers                     |
+ | **Optional (Java 8+)**     | `Optional<T>`                                                        | `public Optional<String> getName()` | Container that may or may not hold a value (avoid nulls) |
+
+
+| **Use Case**                    | **Recommended Return Type**       |
+| ------------------------------- | --------------------------------- |
+| Method doesn’t return a value   | `void`                            |
+| Returns one value (like age)    | Primitive (`int`, `double`, etc.) |
+| Returns data that can be absent | `Optional<T>`                     |
+| Returns a collection            | `List<T>`, `Map<K,V>`, `Set<T>`   |
+| Multiple values                 | Custom class or `record`          |
+| Generic utility methods         | `T`, `<T> T get()`                |
+
+
+
 ________________________________________
 ✅ Java Methods – Interview Question Bank
 🔹 Basic-Level Questions

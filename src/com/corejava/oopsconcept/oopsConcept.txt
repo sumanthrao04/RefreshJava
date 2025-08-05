@@ -8,6 +8,7 @@
 8.	What is the significance of constructors in object creation?
 9.	How would you model a banking system using classes and objects?
 10.	How do classes and objects help in code reusability and maintainability?
+11. deep copies vs shallow copies?
 ________________________________________
 🔹 Core Java Interview Questions on Classes and Objects
 1.	What are the differences between a class and an object in Java?
