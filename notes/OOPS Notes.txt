@@ -1,0 +1,84 @@
+Order of execution - SQL
+Lambda expressions
+Beans creation
+
+
+. DAMS combines a Java based team called Distributes Services and a mainframe based team called Mainframe Services. Distributes Services is a Middleware and serves as a hub connecting various backend teams and front end consumers. Mainframe Services mostly serves at the backend, helping various front end consumers to connect, access and process data from databases or downstream applications. Together we own 250+ services and are responsible for end to end product management, engineering and maintenance for all services. 
+
+•	Our team also provides production support and pre-production environment support. Being a middleware, we’re the most vulnerable application, that gets effected by changes in all the surrounding applications. We monitor all our services round the clock and ensure there are no issues in production and preproduction environments. Any issues reported are also addressed on priority by joining triage lines or via emails.  Hence, we help provide a stable application in an ever-changing environment. 
+
+•	For business requirements, we work hand in hand with various upstream and downstream applications to collaborate and deliver quality product
+
+
+
+Sunday - OOPS in detail with snecario based questions + Karthik assignment
+Monday - DBMS + SQL query practice
+Tuesday - Collections revision
+Wednesday - Design Principles(Singleton + Factory Method + Prototype) + SOLID Principles
+Thursday - Revision of all notes 
+Friday - Project related questions preparation
+
+
+OOPS:
+
+ABSTRACTION:
+It is a way of showing only the essential functionality to the user and hiding the implementation details.
+Abtract classes have methods without implementation and they are implemented by their subclasses.
+2 ways to achieve Abstraction:
+1) Abstract classes (Partial Abstraction)
+2) Interface (100% abstraction)
+Abstract class is declared using Abstract keyword and it can contain abstract methods, non abstract methods and constructors as well.
+
+
+ENCAPSULATION:
+Encapsulation is a way of wrapping or binding the data and methods in a single unit.
+It is like a protective shield that protects the data from being accessed by other classes.
+To encapsulate a data we initialize them with private keyword so that the data gets limited to that particular class and to access them from outside the class, we create the getter setter method and make them public and pass the data into them, then we can call those getter setter methods from outside the class.
+
+
+INHERITANCE:
+Subclass extends Superclass and inherits the properties of Superclass. 
+Types:
+Single Inheritance: One subclass extends one superclass
+Multilevel Inheritance: One subclass extends a superclass and that subclass is extended by another subclass, for which the previous subclass becomes a superclass.
+Heirarchical Inheritance: Multiple subclasses are there extending the same superclass.
+Multiple Inheritance: Java does not support this now. One class can have multiple superclass and it can be achieved only by interface.
+Hybrid Inheritance: It's a mixture of any of the above inheritance types.
+
+
+POLYMORPHISM:
+One entity can have multiple forms.
+Types:
+1) Method Overloading (Compile-time polymorphism) - There can be more than one method with same name in a class but with either different return type or different method signature (type of parameter or number of parameters).
+2) Method Overriding (Runtime-polymorphism) - Child class can have the same method name with same return type and same method signature that is there in the Parent class.
+
+
+Abstract class features:
+An instance of an abstract class can not be created.
+Constructors are allowed.
+We can have an abstract class without any abstract method.
+There can be a final method in abstract class but any abstract method in class(abstract class) can not be declared as final  or in simpler terms final method can not be abstract itself as it will yield an error: "Illegal combination of modifiers: abstract and final"
+We can define static methods in an abstract class
+We can use the abstract keyword for declaring top-level classes (Outer class) as well as inner classes as abstract
+If a class contains at least one abstract method then compulsory should declare a class as abstract 
+If the Child class is unable to provide implementation to all abstract methods of the Parent class then we should declare that Child class as abstract so that the next level Child class should provide implementation to the remaining abstract method
+
+Access Specifiers:
+1)Default Access Modifiers: When no access speicifier is specified with a class, method or data member then its considered as default. Only classes within the same package can access them.
+2)Private Acess Modifiers: They are declared with private keyword and can only be accessed in the class in which it is declared and not outside of it.
+3)Protected Access Modifier: Declared with protected keyword. Can be accessed only within the same package and any subclasses in another package.
+4)Public Access Modifier: Declared with public keyword and can be accessed from anywhere in the application.
+
+
+DBMS questions:
+What are Indexes ?
+Indexes help retrieving the data quickly and efficiently. Suppose we want to retrieve a particular data (e.g "Manoj") from Name column, and suppose the table has 1000 rows and Manoj is at the last row so the whole table scan will happen to match the query with the name Manoj. So to avoid that full table scan and provide the result quickly we use Indexing.
+CREATE INDEX Index_name on TABLE_NAME(COLUMN_NAME)
+DROP INDEX Index_name on TABLE_NAME
+
+DISADVANTAGES OF INDEX:
+1) It takes up extra memory on addition to the table
+2) Any operation like insertion, update or delete being performed on the table needs to be performed on the Index as well.
+
+If we drop a table, does it also drop related objects like constraints, indexes, columns, default, views and stored procedures ?
+Yes, it drops all the related objects but does not drop views and stored procedures because they are outside the table.

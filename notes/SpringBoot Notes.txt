@@ -1,0 +1,294 @@
+SPRING BOOT:
+
+BEAN:
+A bean is also an object which is needed to be initialized only once and then it can be used anywhere in the codebase. We don't have to create an object everytime we move to a new class, we can directly use the bean.
+
+MAVEN:
+Maven is a build automation tool and manages dependencies.
+Maven repository contains all the JARS, we can just take them from the repository as per our requirement and use them in our pom file, it makes life easy.
+
+IOC Container:
+IOC (Inversion of Control) is a container that contains all the classes created in the project. So we don't have to create the objects manually everytime. Spring boot holds this IOC container feature which has all the objects already. 
+ApplicationContext implements that IOC container.
+NOTE: IOC Container does not contain all the classes created in the project. It contains only those objects which have @Component annotation in them.
+Now, the IOC Container will contain only those classes with @Component annotation that are defined within the base package, base package is the package defined in the main class. Suppose we create another package and define a class inside that package with the @Component annotation, still IOC container won't take that class, and on running the application we'll get the error "Consider defining a bean of that particular class".
+
+DIFFERENCE BETWEEN BEAN FACTORY AND APPLICATION CONTEXT:
+Bean Factory is a fundamental container providing functionalities for managing beans.
+Application Context is an advanced container extending Bean factory with additional features.
+
+Bean Factory does not support annotations, it needs to be configured in the XML file.
+Application Context supports annotations required for bean autowiring.
+
+Bean Factory supports lazy loading.
+Application Context supports eager initialization.
+
+CONSTRUCTOR INJECTION:
+The dependencies are injected using class constructors. Student is a class that is dependent on Parent class. An object of Parent class is created in the Student class and then we create a parameterized constructor of the Student class and pass the object of Parent class in the parameters of the Constructor.
+
+SETTER INJECTION:
+The dependencies are injected using Setter methods. To inject dependencies using Setter Injection, we have to inject the object of Parent class in the Student class then we have to create the Setter method of that dependency injection (Parent parent).
+
+DIFFERENCE BETWEEN CONSTRUCTOR INJECTION AND SETTER INJECTION:
+For Constructor Injection, the dependency is mandatory.
+For Setter Injection, the dependency is optional.
+
+Constructor Injection is used when we want immutability, the injected object should not change after object creation.
+Setter Injection is used when we may need to change the dependency after the object is created.
+
+@SpringBootApplication annotation performs tasks of 3 annotations together, the annotations are @Configuration, @EnableAutoConfiguration and @ComponentScan
+
+@ComponentScan -> This annotation scans all the beans containing @Component annotation and stores them in the IOC Container.
+
+@EnableAutoConfiguration -> Suppose we want to establish a connection with the DB, we define the dependency of the DB in the pom.xml and the application.properties specifies the server, port, username and password, now this annotation will handle setting the connections with the DB all by itself, we don't have to do anything.
+
+@Configuration -> This annotation specifies that a class will be providing a configuration. This annotation is always used with another annotation i.e @Bean. @Bean annotation is also used to create a bean but it is always specified with a function and not with a class. @Configuration has an alternative annotation as @SpringBootConfiguration
+
+@RestController -> It is one of the specialized type of @Component, it also creates beans but has some extra features with it as well. Whenever this annotation is provided to a class, it specifies that whatever endpoints are there in the class and whetever they are returning, those will be converted to JSON automatically.
+RestController is used to create RESTful web services APIs, it specifies that the class is a controller class and will be dealing with the HTTP requests and will be returning the response in the form of JSON/XML. It is a combination of @Controller and @ResponseBody annotations.
+
+NOTE: All methods inside a Controller class should be public so that it can be invoked by the Spring framework or external HTTP requests.
+
+@RequestBody -> This annotation will take the request from the body and convert it into Java object so that we can use that in our code.
+
+@PathVariable -> It is used to bind the variable part of the URL to the method parameter.
+
+ORM (Object Relational Mapping):
+ORM is a technique to map Java objects to the database tables. ORM frameworks like Hibernate can map the fields in a class to the columns in the table, making it easier to insert, update, retrieve and delete records.
+
+JPA:
+JPA is a way to achieve ORM, that includes interfaces and annotations that we use in our Java classes, and it requires a persistence provider (ORM tool) for implementation.
+Examples of JPA persistence providers or ORM tools are Hibernate, EclipseLink and OpenJPA. These providers implement the JPA interfaces and provide the underlying functionality to interact with the databases.
+
+HOW TO CALL OR CONSUME EXTERNAL API IN SPRINGBOOT ?
+Define the external URL in the GetMapping method on which the service is accessible. Create an object of RestTemplate and from that object, call getForObject method, and in it's parameter define the url on which you had stored the external URL.
+
+JDBC:
+JDBC is a Java API that allows Java program to connect and interact with the database.
+They use JDBC driver.
+We need to write SQL queries in it.
+
+ORM:
+ORM is a technique that helps us to map the Java Objects with the Database table.
+Instead of using SQL queries to interact with the DB, we can directly use the Java objects.
+
+JPA:
+JPA is a specification of ORM that provides the interfaces and annotations that persist the Java Objects to the relational DB.
+Annotations like -> @Entity, @Id, @GeneratedValue, @Column
+
+HIBERNATE:
+Hibernate is the implementation of the JPA specification. It provides some additional features like caching, lazy loading etc.
+
+DIFFERENCE BETWEEN CRUD REPOSITORY AND JPA REPOSITORY:
+CRUD repository extends Repository interface.
+JPA repository extends PagingAndSortingRepository.
+
+CRUD repository performs all CRUD operations.
+JPA repository contains the API of CRUD repository and PagingAndSortingRepository repository.
+
+CRUD repository works as a root interface.
+JPA repository extends both CRUD repository and PagingAndSortingRepository repository.
+
+DIFFERENT WAYS TO ESTABLISH CONNECTION BETWEEN MICRO-SERVICES
+In a Synchronous way:
+1) REST Template
+2) Feign -> Can be preferred over REST Template as we don't have to hardcode the URL here.
+
+In Asynchronous way:
+1) Message-Broker -> It acts as an intermediary service between two micro-services. The message is first sent to the listener or the intermediary service e.g ActiveMQ or Kafka. The message is not directly sent to the other micro-service.
+
+WHY DO WE PREFER REST TEMPLATE OVER FEIGN ?
+Feign is preferred for internal service-to-service communication due to its simplicity and integration with service discovery. However, I prefer RestTemplate when I need fine-grained control over HTTP requests, dynamic URL construction, or when consuming external APIs that aren’t part of our microservice ecosystem.
+
+WHAT IS THE DIFFERENCE BETWEEN REST API AND SOAP UI ?
+REST is an API design approach, and SoapUI is a tool used to test APIs (both REST and SOAP). They're not directly comparable but can work together.
+
+CRUD Operation Cheat Sheet for Controller class:
+
+| CRUD         | HTTP Method | Mapping Annotation | Example URL   | Method Parameter    | Annotation on Parameter         |
+| ------------ | ----------- | ------------------ | ------------- | ------------------- | ------------------------------- |
+| **Create**   | POST        | `@PostMapping`     | `/users`      | Request body (JSON) | `@RequestBody`                  |
+| **Read All** | GET         | `@GetMapping`      | `/users`      | None                | —                               |
+| **Read One** | GET         | `@GetMapping`      | `/users/{id}` | Path variable       | `@PathVariable`                 |
+| **Update**   | PUT         | `@PutMapping`      | `/users/{id}` | Path + Request Body | `@PathVariable`, `@RequestBody` |
+| **Delete**   | DELETE      | `@DeleteMapping`   | `/users/{id}` | Path variable       | `@PathVariable`                 |
+
+
+SINGLETON:
+Singleton Pattern ensures that only one instance of a class is created during the lifetime of an application, which has a global point of access.
+public class Singleton {
+    private static Singleton instance;  //Only instance of the Singleton class, declared static so that it belongs to the class, not the object
+	
+	private Singleton(){}     //private constructor so that no new object can be created externally
+	
+	public static Singleton getInstance() {   //method declared public because this is the only way to access the Singleton object.
+        if(instance == null) {
+            instance = new Singleton();
+        }
+    return instance;
+}
+Why is it required to create only one instance of a class in Singleton ?
+It saves memory, improves performance and gives a global access. 
+One real time example -> Only one aadhar card is allowed for a person. If multiple aadhar card for a person then it will lead to identity verification failure. Similarly there should be only one instance for a class in Singleton.
+
+Why can't we use Static class instead of Singleton ?
+Because Static class can't be implemented or extended by other classes, but Singleton class provides that facility.
+
+Use cases for Singleton:
+1) DB Connection -> Imagine every class opens it's own DB connection object, it will overload the system.
+2) Logging System -> Imagine every class creates it's own logger object and writes a log file, it will create log conflicts
+
+FACTORY METHOD: 
+Creating objects without exposing the object creation logic.
+interface Shape {
+    void draw();
+	}
+
+class Circle implements Shape {	
+    void draw() {
+	System.out.println("Drawing Circle");
+	}
+}
+
+class Square implements Shape {
+    void draw() {
+	System.out.println("Drawing Square");
+	}
+}
+
+class ShapeFactory {
+    public static Shape getShape(String type) {
+	    if("circle".equalsIgnoreCase(type)) {
+		    return new Circle();
+		}
+		else if("square".equalsIgnoreCase(type)) {
+		    return new Square();
+		}
+		return null;
+	}
+}
+Shape s = getShape("circle");
+s.draw();
+
+
+Example of Singleton:
+
+public class Singleton{
+     public static void main(String args[]) {
+	     ABC obj1 = ABC.getInstance();
+		 
+public class ABC {
+    static ABC obj1 = new ABC(); //Create a static instance
+	private ABC(){               //Create a private constructor to prevent external instantiation
+	}
+	public static getInstance() {
+	   return obj1;
+	   }
+
+WHEN TO USE SINGLETON ?
+It is used when only one instance of a class is needed to coordinate all actions across the system.
+When a shared resource needs to be accessed globally.
+
+KEY CHARACTERISTICS OF SINGLETON:
+private constructor to prevent external instantiation.
+static instance that is the only object of the class.
+
+ACTUATORS:
+Spring actuators provide production-ready features like health check, metrics, application info.
+They can be accessed via endpoints like actuator/health, actuator/metrics.
+
+How does Springboot handles exceptions globally ?
+By using @ControllerAdvice at class level and @ExceptionHandler (Exception.class) at method level.
+
+How to validate request data in Spring Boot?
+Use @Valid with Bean Validation:
+
+@PostMapping("/employee")
+public ResponseEntity<?> save(@Valid @RequestBody Employee emp) {
+    ...
+}
+
+Annotate fields with:
+@NotNull, @Size(min=2), @Email, etc.
+
+How to schedule tasks in Springboot ?
+By using @EnableScheduling or @Scheduled(fixedRate = 5000)
+
+How to scan packages using @ComponentScan outside of the base package ?
+By using:
+@ComponentScan(basePackages = {
+    "com.company.app", 
+    "com.company.common", 
+    "com.external.util"
+})
+in the main class above @SpringBootApplication annotation.
+
+
+String Constant Pool:
+It is a special memory area in Java that optimizes the memory usage and improve performance when dealing with Strings.
+It is a part of the Method Area (a part of the JVM memory management) where Java stores unique string literals.
+
+JVM:
+JVM is used to read the Bytecode and makes Java platform independent. By Bytecode I mean, when Javac (Java Compiler) compiles the .java file, a .class file gets created which is nothing but the bytecode and JVM reads that bytecode based on the machine it's working on like Windows/Linux.
+
+JRE(Java Runtime Environment):
+JRE has JVM + some predefined libraries like Java.io, Java.util that helps us to run the program.
+
+JDK(Java Development Kit):
+JDK is used for developers. It has JRE + Javac (Compiler) + developer tools. It is used to write the code, compile the program and run the code. Developer tools include Javadoc, JAR, Javac etc.
+
+
+String, StringBuilder and StringBuffer:
+String is immutable and creates an object everytime we modify something that consumes space.
+
+StringBuffer is mutable, that means we can modify the same object without creating a new one and it can be used with multiple threads because it ensures thread safety as it applies synchronized, but because of that it works slower than StringBuilder.
+
+StringBuilder is also mutable, but it does not apply synchronized so it is not thread safe, as a result it works faster compared to StringBuffer.
+
+COMPARATOR and COMPARABLE:
+Comparable is for default sorting. It tells by itself how to sort. Class implements Comparable interface and compareTo method is overriden.
+
+Comparator is for custom sorting. We can decide on what basis we need to do the sorting. Class implements Comparator interface and compare() method is overriden.
+
+
+Kafka:
+| Concept            | Meaning                                               |
+| ------------------ | ----------------------------------------------------- |
+| **Producer**       | Sends (writes) data/messages to Kafka                 |
+| **Consumer**       | Reads data/messages from Kafka                        |
+| **Topic**          | A category or feed name to which messages are sent    |
+| **Broker**         | A Kafka server that stores topics                     |
+| **Partition**      | A topic is split into smaller parts (for parallelism) |
+| **Offset**         | A unique ID for each message in a partition           |
+| **Consumer Group** | A group of consumers that share the work              |
+
+
+SQL Cheat Sheet:
+
+| JOIN Type         | Includes Matching Rows?           | Includes Non-Matching Rows? | Example Use Case                                              |
+| ----------------- | --------------------------------- | --------------------------- | ------------------------------------------------------------- |
+| `INNER JOIN`      | ✅ From both tables                | ❌                           | Get employees **who belong to a department**                  |
+| `LEFT JOIN`       | ✅ From both tables                | ✅ Left table only           | Get **all employees**, even those **without a department**    |
+| `RIGHT JOIN`      | ✅ From both tables                | ✅ Right table only          | Get **all departments**, even those **without employees**     |
+| `FULL OUTER JOIN` | ✅ From both tables                | ✅ From both tables          | Get **all records** from both, including non-matching         |
+| `CROSS JOIN`      | ❌ (No condition used)             | ✅ All combinations          | Generate **all combinations** (Cartesian product)             |
+| `SELF JOIN`       | ✅ Matching rows within same table | —                           | Compare rows **within the same table**, e.g. **same manager** |
+
+
+
+Kafka Interview questions(to learn afterwards):
+What is Kafka? How is it different from a message queue like RabbitMQ?
+
+What are topics and partitions in Kafka?
+
+What is the role of Zookeeper in Kafka?
+
+What is offset? How do consumers track messages?
+
+What happens if a consumer fails?
+
+How does Kafka ensure data durability?
+
+Explain consumer groups and parallel processing.
+
+Can a Kafka topic have multiple consumers?

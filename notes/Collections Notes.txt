@@ -1,0 +1,224 @@
+COLLECTIONS:
+
+LIST:
+We use list when we want the elements in the same order in which it is provided and duplicates are allowed. Can be acessed through the indexes.
+
+ARRAYLIST:
+ArrayList is dynamic in size. The initial capacity of the ArrayList is 10. It's size increases by 1.5 times the initial capacity.
+Arrays.asList() -> This can't be modified.
+
+COMPARATOR:
+Comparator is an interface that sorts the elements in the list using compare(T ob1, T ob2) method, where it compares the objects of same type.
+@Override
+public int compare(T ob1, T ob2)
+If int is returned as negative then ob1 comes prior to ob2.
+If int returns 0 then both will get same preference.
+If int returns positive then ob2 comes prior to ob1.
+
+
+COMPARABLE EXAMPLE:
+class Student implements Comparable<Student> {
+     int id;
+	 public int compareTo(Student s){
+	       return this.id - s.id;
+		   }
+    }
+	
+	
+COMPARATOR EXAMPLE:
+Comparator<Student> nameComparator = (s1, s2) -> s1.name.compare(s2.name);
+Collections.sort(studentList, nameComparator);
+
+class AgeComparator implements Comparator<Employee> {
+    @override
+	public int compare(Employee e1, Employee e2) {
+	    return Integer.compare(e1.getAge(), e2.getAge());
+	}
+}
+
+LINKEDLIST:
+In LinkedList, each element is a separate object called a Node and each Node has a data and a pointer or reference to the next node.
+If it's a DoublyLinkedList, then there will be two pointers, one will be pointing to the next node and the other will be pointing to the previous node.
+LinkedList is not contiguous so we can't get the index directly, we have to run a loop instead.
+
+ADVANTAGES OR DIFFERENCE BETWEEN LINKEDLIST AND ARRAYLIST:
+LinkedList is easier for insertion and deletion of elements because it doesn't require shifting of elements as we do in ArrayList.
+LinkedList has slower random access because we don't have the option to extract any value through it's index, instead we have to traverse through the list through loop.
+LinkedList consumes more memory because we have to store the reference for the next node as well along with the element, compared to an ArrayList which only stores the element.
+
+VECTOR:
+Vector is also a part of list and similar to ArrayList, we can have random access of elements through their index. 
+Vectors are synchronized so they are thread safe but to maintain thread safety it can consume some time for operation, so ArrayList is recommended to be used over it if thread safety is not a concern.
+Vector also has a capacity of initial size 10. It's size increases by 2 times the initial capacity.
+Vector(int initial capacity) -> We can give the initial capacity of the vector
+Vector(int initialCapacity, int capacityIncrement) -> We can give the required increment size as well.
+
+STACK:
+Stack follows LIFO (Last In First Out). It extends Vector. Stack is thread safe as it extends Vector
+
+MAP:
+Map does not extend Collections.
+HASHMAP:
+map.put(key, "value");
+map.get(key);
+map.remove(key);
+
+KEY CHARACTERISTICS:
+Unordered: Does not maintain any order of elements.
+Can have one null key and multiple null values.
+Not synchronized so not thread safe.
+
+BASIC COMPONENTS OF HASHMAP:
+1) Key
+2) Value
+3) Bucket: Hashmap works as an array where at each index, a key value pair is stored.
+4) Hash Function: It is an algorithm that takes in any input or key and returns a fixed size string of bytes, typically a numeric value. The output is known as Hashcode, Hash value or simply hash.
+
+KEY CHARACTERISTICS OF HASHMAP:
+1) The same input will always produce the same output.
+2) Regardless of the size of the input, the hashcode has a consistent size of 32 bits or 64 bits.
+3) The Hash function computes the hash quickly.
+
+HOW DATA IS STORED IN HASHMAP:
+1) Hashing the key: First the key is passed through the Hash Function to generate a unique hash code (an integer value). This hashcode helps to determine where the key value pair needs to be stored in the array (Bucket array).
+2) Calculating the Index: The hashcode is used to calculate the index of the array where the key value pair needs to be stored. The calculation can be done with the formula -> hashcode % array size
+Suppose the arraysize is 16 then the calculation will be hashcode % 16. The remainder will give the index position where the key value pair will be stored. By default the sixe of the array is 16.
+3) Storing the Bucket: The key-value pair is stored in the bucket at the calculated index. A bucket (an index) can have multiple key-value pairs. This is called Collision-handling mechanism.
+
+HANDLING COLLISION:
+Since multiple keys can generate the same index (situation called as Collision), Hashmap uses a special technique to handle this situation, it uses LinkedList. If multiple key-value pairs map to the same bucket, then they are stored in a LinkedList inside the bucket. When a key-value pair is retreved, the LinkedList is then traversed until the matching key is found. But if we have ample number of key-value pairs inside the same index then LinkedList will take time to traverse through each and every node to find the match. To overcome this situation, there's a threshold set to using LinkedList. If the threshold or the number of key-value pair reaches 8, the LinkedList gets converted to self-balanced Binary search tree (Red-Black tree).
+
+HASHMAP RESIZING (REHASHING):
+Hashmap has an internal array of default size 16.
+When the number of key-value pair insertion increases and crosses a certain load factor(by default 0.75), the Hashmap increases it's size.
+So when the number of key-value pair insertion exceeds 16*0.75 = 12 elements, then Hashmap increases it's size. The size of Hashmap becomes double.
+
+LINKED HASH MAP:
+Linked Hashmap preserves insertion order but for that it uses doubly linkedlist which makes it slow compared to hashmap and also consumes more memory than hashmap.
+
+LRU (Least Recently Used):
+When defining Linked HashMap, we can provide the initial capacity and load factor in the parameter and alongwith that we can also provide the access order as True, which is False by default. So suppose we have 4 records of students with name and marks. Suppose we have:
+
+LinkedHashMap<String, Integer> hashmap = new LinkedHashMap<>(11, 0.8f, true);
+hashmap.put("Rahul", 100);
+hashmap.put("Krishna", 99);
+hashmap.put("Tejas", 98);
+hashmap.get("Krishna");
+hashmap.get("Tejas");
+hashmap.get("Rahul");
+Then, Krishna will me removed from the record as it is the least recently used or the eldest element. This helps is preventing spaces getting piled up in the cache memory.
+
+SORTED MAP:
+Sorted Map is an interface that extends Map and implements TreeMap and sorts the entries based on the keys and guarantees natural ordering or by a specified comparator.
+SortedMap<Integer, String> map = new TreeMap((a, b) -> b - a);  //Using Comparator in the parameters only if want to customize sorting.
+map.put(91, "Rahul");
+map.put(78, "Vivek");
+map.put(77, "Rajan");
+map.put(99, "Pratham");
+It will print in ascending order as it has Comparable by default. But we customize the sorting by using Comparator.
+
+Now, we can use Map also in place of SortedMap, that will also give the result in sorted manner but using SortedMap provides us with some additional inbuilt methods like map.firstKey(), map.lastKey(), map.headMap(), map.tailMap().
+map.headMap(91) -> will give all records starting from 77 to 78 excluding 91.
+map.tailMap(91) -> will give all records starting from 91 to 99 including 91.
+
+NavigableMap extends SortedMap which provides navigable options. It provides some special features like finding the closest matching key or reversing the order.
+
+HASHTABLE:
+HashTable is synchronized 
+HashTable does not accept null key or null value. In HashMap only one null key and multiple null values is allowed.
+HashTable is slower than HashMap as it is synchronized.
+Only LinkedList is used in case of collision also.
+All methods are synchronized including map.get(), map.read() as well which is considered as a limitation as well because even a read thread has to wait for it's turn, as a solution for this, ConcurrentHashMap was introduced.
+
+CONCURRENT HASHMAP:
+Concurrent Hashmap is thread safe and allows multiple threads to read/write data without corrupting the data.
+Suppose we have a Hashmap and 5 threads are using put and get. Hashmap is not thread safe so data corruption can occur.
+To avoid this, earlier we used HashTable as it was thread safe but it used to lock the whole map that made it slow.
+Now we have Concurrent Hashmap which applies the locks in bucket/segments so the lock is applied to only one segment on which the operation is being performed and the rest of the map is free.
+
+Concurrent Hashmap is thread-safe.
+Concurrent Hashmap does not allow null key or null value.
+It is faster than HashTable as it does not lock the whole map.
+
+| HashMap                             | ConcurrentHashMap         |
+| ----------------------------------- | ------------------------- |
+| Not thread-safe                     | Thread-safe               |
+| Allows 1 null key, many null values | No null key/value allowed |
+| Faster in single-thread             | Faster in multi-thread    |
+| Fail-fast iterator                  | Fail-safe iterator        |
+
+
+| Hashtable                        | ConcurrentHashMap                        |
+| -------------------------------- | ---------------------------------------- |
+| Whole map pe lock lagata hai     | Bucket level lock (fine-grained locking) |
+| Poor performance in multi-thread | Better performance                       |
+| Legacy class (old)               | Modern, preferred class                  |
+
+TREEMAP:
+TreeMap performs natural sorting of the key value pairs based on the keys.
+When a pair is inserted it compares the inserting key with the existing key places it accordingly.
+For comparing the key it uses either Comparable (natural ordering) or Comparator (custom ordering).
+
+
+IMMUTABLE MAP:
+It's a map which can't be modified. To make it immutable we use map.of();
+
+CONCURRENT SKIP LIST MAP:
+It is thread safe map which provides sorting as well. It plays with multiple layers which makes it faster while searching an element.
+1,2,3,4,5,6,7,8,9
+layer 3 -> 1--------5------9
+layer 2 -> 1---3----5---7--9
+layer 1 -> 1 2 3 4 5 6 7 8 9
+
+So it will first search for an element in level 3, if not found then it goes to layer 2, and then to layer 1. So it is skipping the elements for a quicker search. That's why it's called skip list.
+
+ITERATOR:
+Iterator is an interface which has some methods like next(), hasNext(). It is an internal working of a for loop basically which helps in iterating through a loop. It helps in iterating through each element by using a pointer to check for the next element by using hasNext().
+Example:
+Iterator<Integer> itr = new numbers.Iterator();
+while (itr.hasNext()) {
+       Integer number = itr.next();
+	   if(number % 2 == 0) {
+	         itr.remoe();
+			 }
+	    }
+	
+	
+QUEUE:
+Queue works in FIFO(First In First Out).
+Queue is an interface which is implemented by LinkedList, PriorityQueue.
+Enqueue -> to add an element -> methods to add -> add() or offer()
+Dequeue -> to remove an element -> methods to remove -> remove() or poll() -> remove() throws exception if empty, but poll() returns null if empty.
+peek -> to look at the head element (the first element in the queue that will be removed first) -> methods to peek -> peek() or element() -> element() throws exception if empty, but peek() returns null of empty.
+
+PriorityQueue:
+The first element in the queue has the most priority.
+Orders elements based on their natural ordering.
+Custom ordering using Comparator.
+Does not allow null values.
+
+
+TRUNCATE DROP DELETE Difference
+WHERE aur HAVING Difference
+
+
+🧠 Practice Questions
+GET /hello?name=Joe → "Hello Joe"
+
+GET /reverse/{text} → Returns reversed string
+
+POST /sum → Accept two numbers in JSON and return the sum
+
+GET /palindrome/{num} → Returns true if number is a palindrome
+
+POST /user → Accept user details and store in DB
+
+GET /users → Return list of all users
+
+POST /validate-age → Accept age and return "valid"/"invalid" depending on a threshold
+
+GET /fibonacci/{n} → Return nth Fibonacci number
+
+POST /email → Accept email and validate format before storing
+
+POST /numbers → Accept list of numbers and return sum of even numbers only

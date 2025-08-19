@@ -220,6 +220,8 @@ processor.pay("1234-5678-9012", 123, 300.0);        // card + CVV
 
 
 
+16. Can you override a private method? Why or why not?`
+
 ________________________________________
 ✅ Java Methods – Interview Question Bank
 🔹 Basic-Level Questions

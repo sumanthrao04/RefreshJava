@@ -1,0 +1,352 @@
+JAVA8 FEATURES:
+1)Lambda Expressions -> They are similar to methods but do not need any name and can be implemented directly in the body of a method.
+                        Example: (x,y) -> x+y; 
+						
+2) Stream API -> To perform operations on Collections
+3) Date and Time API 
+4) Base64 Encode Decode
+5) Method Reference and Constructor Reference (:: operator)
+6) Default Methods and Static methods in Interface
+7) Functional Interface -> If an interface has only one method without an body
+8) Optional Class, JavaIO Improvements, Collection API Improvements
+
+LAMBDA EXPRESSIONS:
+
+Rules:
+ Example -> private int getStringLength(String s) {
+                   return s.length();
+				   }
+				   
+Remove private int getStringLength:
+            (String s) -> {return s.length();}
+			
+Remove curly braces if single statement:
+            (String s) -> return s.length();
+			
+Remove data type of parameter, it will understand on its own:
+            (s) -> return s.length();
+			
+Remove common braces if single parameter:
+             s -> return s.length();
+			 
+Remove return:
+             s -> s.length();
+			 
+			 
+Benefits of Lambda expression:
+1) Readable and concise code
+2) JAR size reduction
+3) to enable parallel processing
+4) To enable functional programming
+5) Elimination of shadow variables
+
+FUNCTIONAL INTERFACE:
+An interface which has single abstract method but can have any number of default and static methods. A Lambda expression can be invoked by functional interface.
+
+What's the use of Functional Interface annotation ?
+It restricts the interface to be a functional interface, so that in future any other developer will not add an extra abstract method thinking that it's a simple interface, if he does so then the lambda expressions related to the first abstract method will throw errors. It is not necessary to use the annotation, using just one abstract method specifies itself that it's a functional interface.
+
+Inheritance in Functional Interface:
+
+Example:
+
+public interface Parent {
+      public void sayHello();
+	  }
+	  
+public interface Child extends Parent {
+      }
+	  
+In the above example, the Child class is also a Functional Interface because overall it is using one abstract method only that is being extended from it's Parent class -> sayHello().
+
+public interface Parent {
+      public void sayHello();
+	  }
+	  
+public interface Child extends Parent {
+      public void sayBye();
+      }
+
+Now in the above example, we have added one more method sayBye(), so now it will throw error because now we have 2 abstract methods sayHello() and sayBye(). We can also check if the Child interface is still a functional interface or not, by applying the @FunctionalInterface annotation.
+
+public interface Parent {
+      public void sayHello();
+	  }
+	  
+public interface Child extends Parent {
+      public void sayHello();
+      }
+	  
+Now in the above example, we are using same method in both interfaces, so Child is also a Functional Interface.
+
+public interface Parent {
+      public void sayHello();
+	  }
+	  
+public interface Child extends Parent {
+      public void sayHello();
+      }
+	  default void sayBye() {
+	  };
+	  
+We can use any number of default and static methods in the Functional Interface.
+
+DEFAULT METHODS INSIDE INTERFACE:
+
+What are Default methods ?
+Default methods are methods with body, and they got introduced in Java 1.8 that we could use it in Functional Interface, it was not there in Java 1.7
+
+I have a Parent interface and it has a default method with some implementation (printing Hello). 
+I have a Child class that implements Parent Interface and this class has overriden the method from the Parent interface and it is printing Heyyy.
+In the main method:
+If I write: Child c = new Child(); -> It will print Heyyy.
+If I write: Parent c = new Child(); -> It will print Heyyy.
+If I write: Parent c = new Parent(); -> We can't do that because Parent is an interface.
+
+
+Interview Question:
+Suppose we have an interface A and an interface B and both the interfaces have default methods with same name and parameter and we apply multiple inheritance in which another class implements A and B. Will it throw an error and why ?
+
+Yes, it will throw error because the compiler will get confused as to which method it needs to call because the name and parameters are same so it won't be able to differentiate. 
+As a solution, we can override the method and write A.super.methodName() or B.super.methodName()
+
+STATIC METHODS INSIDE INTERFACE:
+Static methods are the methods defined in an interface with the keyword static.
+Static methods contain the whole definition of the function.
+Static methods cannot be overriden or changed in the implementation class.
+
+Suppose we have an interface A and a class in implementing interface A. The interface has a static method and we want to access it. We can't create the object of the class and call the method of interface A through that object, neither can we use className.methodName. The only way to call a static method from an interface is by calling it through interface name only like -> A.methodName();
+
+If we create a static method inside an interface and create a class that implements that interface, and create a method in the class with the same name, then it won't throw any error because the static method being static, it won't be visible to other classes so the compiler won't be able to recognize whether there is another method with the same name or not.
+
+public static void main can also be written under an interface instead of a class because it is a static method.
+
+Functional interface acts as a datatype for lambda expression.
+Runnable Interface and Comparator are Functional Interface.
+
+PREDICATE:
+Predicate is a Functional Interface introduced in Java8, it represents a boolean valued function.
+
+FUNCTION:
+Function is also a Functional Interface, it has one abstract method apply(), 2 abstract methods andThen() and compose(), 1 static method identity().
+Unlike Predicate which returns a boolean valued function, Function can take input of any datatype and return the result of any datatype.
+And it performs proper implementation or business logic.
+
+CONSUMER:
+Consumer is also a Functional Interface and accepts the input but doesn't return anything.
+
+SUPPLIER:
+Supplier is also a Functional Interface that doesn't take any input parameter but returns a value.
+
+UNARY OPERATOR:
+It is also a Functional Interface and it extends Function. It is used when Function has same input type and same output type.
+Example:
+Function<Integer, Integer> function = x -> x * x;
+Since Function has input and output both as Integer only so:
+UnaryOperator<Integer> unaryOperator = x -> x * x;
+
+BINARY OPERATOR:
+It is also a Functional Interface and it extends BiFunction. It is used when Function has same input type and same output type.
+Example:
+BiFunction<String, String, String> biFunction = (str1, str2) -> str1 + str2;
+Since BiFunction has input and output both as Integer only so:
+BinaryOperator<String> binaryOperator = (str1, str2) -> str1 + str2;
+
+STREAM:
+Streams is a feature of Java 8 that allows us to perform operations on Collections in a functional and declarative way.
+Declarative means focus on what to do and not how to do it e.g filter, map, collect etc
+
+JUST TO REMEMBER:
+filter(predicate) -> to filter the list or array and it will use predicate to give a boolean value
+map(function) -> to perform an implementation inside the map parameter
+distinct() -> to remove duplicate values from the list or array
+sorted(Comparator) -> to sort the list or array
+limit(value) -> to print the limited number of values from the list starting with the first element in the list
+skip(value) -> starting from the beginning of the list, how many values do you want to skip
+peek(consumer) -> will take input but won't return anything
+max(Comparator) -> gives the max value from the list by comparing between the elements by using comparator like (a, b) -> (a - b)
+count() -> gives the count of the elements in the list
+flatMap() -> When a list of lists is being used then flatMap() is used to flatten the list which means it converts it into a single stream.
+
+min, max, count, collect are called the Terminals as they are used at the last of the stream operation statements.
+
+Some operations needed to be kept in mind while working with Strings on stream API:
+| Method                            | What it does                               |
+| --------------------------------- | ------------------------------------------ |
+| `startsWith()`                    | Checks if a string starts with some prefix |
+| `endsWith()`                      | Checks if a string ends with a suffix      |
+| `contains()`                      | Checks if a substring exists               |
+| `toLowerCase()` / `toUpperCase()` | Changes case                               |
+| `length()`                        | Returns length of string                   |
+| `charAt(index)`                   | Returns a character at specific index      |
+| `equals()` / `equalsIgnoreCase()` | Compares strings                           |
+| `substring()`                     | Extracts parts of the string               |
+| `split()`                         | Breaks string into array                   |
+| `trim()`                          | Removes leading/trailing spaces            |
+
+Learn by Category
+Intermediate operations:
+
+map(), filter(), sorted(), distinct(), peek()
+
+Terminal operations:
+
+collect(), findFirst(), findAny(), count(), forEach(), anyMatch(), allMatch(), noneMatch()
+
+Collectors (used with collect()):
+
+toList(), joining(), groupingBy(), mapping(), summarizingInt() etc.
+
+
+| Task             | Common Stream Methods          |
+| ---------------- | ------------------------------ |
+| Filter items     | `filter()`                     |
+| Transform items  | `map()`                        |
+| Collect to list  | `collect(Collectors.toList())` |
+| Count matches    | `count()`                      |
+| Find first match | `findFirst()`                  |
+| Join strings     | `Collectors.joining()`         |
+| Sort elements    | `sorted()`                     |
+| Check conditions | `anyMatch()`, `allMatch()`     |
+
+
+Example of integer with explanation to keep in mind:
+
+Q) You want to sort the digits of an integer (52341) and print them in ascending order.
+
+String sorted = String.valueOf(num)
+This converts the int to a String.
+52341 → "52341"
+
+ .chars()
+chars() returns an **IntStream** of the Unicode values of the characters in the String.
+
+For "52341", this returns a stream of int values for characters:
+'5' = 53, '2' = 50, '3' = 51, '4' = 52, '1' = 49
+
+So, the stream is:
+
+[53, 50, 51, 52, 49]
+
+   .sorted()
+This sorts the Unicode int values in ascending order:
+
+[49, 50, 51, 52, 53]
+Which correspond to characters:
+
+'1', '2', '3', '4', '5'
+
+  .mapToObj(c -> String.valueOf((char) c))
+mapToObj() converts each primitive int (from the stream) back to a character.
+
+(char) c casts the int (like 49) to character ('1')
+
+String.valueOf() converts it to a String, because Collectors.joining() needs a Stream<String>
+
+So we now have:
+
+["1", "2", "3", "4", "5"]
+
+    .collect(Collectors.joining());
+This joins the list of strings into one final String without any delimiter.
+
+Result:
+
+"12345"
+
+
+
+STRING TO STREAM:
+
+a. stream of characters
+
+String input = "hello";
+
+input.chars()                      // returns IntStream of char values
+     .mapToObj(c -> (char) c)
+     .forEach(System.out::println);
+✅ Use .chars() to stream over characters.
+
+
+
+b. Stream of words (split by space or any delimiter)
+
+String sentence = "Java is awesome";
+
+Arrays.stream(sentence.split(" "))
+      .forEach(System.out::println);
+	  
+	  
+c. Count vowels in a string
+
+long count = "hello world"
+    .toLowerCase()
+    .chars()
+    .filter(ch -> "aeiou".indexOf(ch) != -1)
+    .count();
+
+System.out.println(count);  // Output: 3
+
+
+ARRAY TO STREAM:
+
+a. Integer array
+
+int[] arr = {1, 2, 3, 4, 5};
+
+int sum = Arrays.stream(arr).sum();
+For int[], use Arrays.stream(arr) which returns IntStream.
+
+
+b. String array
+
+String[] words = {"java", "spring", "boot"};
+
+Arrays.stream(words)
+      .map(String::toUpperCase)
+      .forEach(System.out::println);
+	  
+	  
+
+🧠 How to Think:
+String → .chars() → gives IntStream (each character)
+
+Array → Arrays.stream(arr)
+
+Single integer → Wrap into range: IntStream.range(1, n)
+
+Use split() if you want to process words or characters from String
+
+
+WHEN TO USE entrySet():
+
+Need keys only? → use keySet()
+
+Need values only? → use values()
+
+Need both or want to filter by value and get key? → use entrySet()
+
+
+| 🎯 Requirement                    | 💡 Collector(s) to Use                                   | ✅ Pattern Example                        |
+| --------------------------------- | -------------------------------------------------------- | ---------------------------------------- |
+| ✅ Group by field                  | `groupingBy()`                                           | Group employees by department            |
+| ✅ Count per group                 | `groupingBy() + counting()`                              | Count employees in each department       |
+| ✅ Max/Min per group               | `groupingBy() + maxBy()/minBy()`                         | Highest salary per department            |
+| ✅ Collect all values per group    | `groupingBy() + mapping()`                               | Names per department                     |
+| ✅ Sum/Avg per group               | `groupingBy() + summingInt()/averagingInt()`             | Total salary per department              |
+| ✅ Custom object per group         | `groupingBy() + reducing()`                              | Build custom DTO per group               |
+| ✅ Sort result after group         | Use `LinkedHashMap` with `.entrySet().stream().sorted()` | Sort departments by employee count       |
+| ✅ Flat List from nested structure | `flatMap()`                                              | Flatten list of lists                    |
+| ✅ Distinct values                 | `distinct()`                                             | Remove duplicates                        |
+| ✅ Collect to Map                  | `toMap()`                                                | `Map<id, Employee>`                      |
+| ✅ Merge duplicates in Map         | `toMap(..., mergeFn)`                                    | Handle duplicate keys with `(a, b) -> a` |
+
+Data Type Conversions:
+| From              | To                | Code Sample                                                                                                        |
+| ----------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `char[]`          | `List<Character>` | `new String(arr).chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()) `                                   |
+| `List<Character>` | `char[]`          | `list.stream().collect(StringBuilder::new, StringBuilder::append,StringBuilder::append).toString().toCharArray()`  |
+| `int[]`           | `List<Integer>`   | `Arrays.stream(arr).boxed().collect(Collectors.toList())`                                                          |
+| `List<Integer>`   | `int[]`           | `list.stream().mapToInt(i -> i).toArray()`                                                                         |
+| `String[]`        | `List<String>`    | `Arrays.asList(arr)`                                                                                               |
+| `List<String>`    | `String[]`        | `list.toArray(new String[0])`                                                                                      |
