@@ -1,0 +1,94 @@
+1.How do you remove duplicate elements from a list using Java 8 streams?
+*** remove duplicate object is pending
+distinct(): Keeps only unique elements by comparing them using equals() and hashCode().
+Internally, distinct() uses a HashSet to track seen elements.
+Time Complexity:
+Inserting into HashSet: O(1) average, O(n) in worst case (rare, when all hash codes collide).
+Done for all n elements ⇒ O(n).
+Space Complexity: O(n) for the HashSet.
+distinct() runs in O(n) on average, since it uses a HashSet internally.
+Order preserved: Unlike a Set, the distinct() method preserves the encounter order from the original list.
+Works for any type: Works on List<Integer>, List<String>, or custom objects (but for custom objects you must properly override equals() and hashCode()).
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.How do you find frequency of each character in a string using Java 8 streams?
+str.chars()
+Converts the string "programming" into an IntStream.
+Each element in this stream is the Unicode code point of each character.
+For "programming", the internal stream looks like:
+[112, 114, 111, 103, 114, 97, 109, 109, 105, 110, 103]
+
+.mapToObj(c -> (char) c)
+Converts each int (character code) into its char representation.
+Now the stream is:
+['p','r','o','g','r','a','m','m','i','n','g']
+
+.collect(Collectors.groupingBy(
+Collects the stream into a Map.
+Uses groupingBy collector, which groups elements by a key and stores them in a map.
+
+Function.identity(),
+Defines the grouping key.
+Function.identity() just means: use the element itself as the key.
+In our case: 'p','r','o','g'... become the map key
+
+Collectors.counting()
+Defines the value in the map.
+Instead of collecting the actual characters, it counts how many times each one appears.
+So the map becomes:
+{p=1, r=2, o=1, g=2, a=1, m=2, i=1, n=1}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+3.How do you find frequency of each element in an array or a list?
+
+*Arrays.stream(numbers)
+Converts int[] → IntStream.
+Needed because arrays don’t directly support .stream() (only collections do).
+
+* .boxed()
+Converts IntStream (primitive int) → Stream<Integer> (object wrapper).
+Required because Collectors.groupingBy works on objects, not primitives.
+
+* .collect(Collectors.groupingBy(...))
+Terminal operation: collects elements into a Map.
+Groups values based on a key function.
+
+* Function.identity()
+Key function = the element itself.
+Equivalent to x -> x.
+Means “group by the element itself”.
+
+* Collectors.counting()
+Downstream collector: counts how many times each element occurs.
+Produces Long values (so map is Map<Integer, Long>).
+
+* System.out.println(freqMap)
+Prints the result:
+{1=1, 2=2, 3=3, 4=4}
+
+Line-by-Line Notes for words
+
+*  fruits.stream()
+Converts list → Stream<String>.
+No .boxed() needed since it’s already objects.
+
+* .collect(Collectors.groupingBy(...))
+Collects elements into a Map.
+Groups values by the key function.
+
+* Function.identity()
+Key = the fruit itself.
+Example: "apple", "banana", "orange".
+
+*Collectors.counting()
+Counts how many times each fruit occurs.
+Produces a Long count.
+System.out.println(freqMap)
+Prints:
+{orange=1, banana=2, apple=3}
+
+Extra Notes (for interviews)
+Works with any array/list type (Strings, Integers, custom objects).
+For primitive arrays: must use .boxed().
+Output type is always Map<Element, Long>.
+------------------------------------------------------------------------------------------------------------------------
