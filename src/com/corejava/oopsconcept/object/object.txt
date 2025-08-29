@@ -1,0 +1,19 @@
+Who Creates the Object in Java?
+* The new Keyword
+* new is the operator that actually creates the object in memory (on the heap).
+* It allocates memory, sets aside space for instance variables, and then calls the constructor.
+             Book b = new Book();
+* new allocates memory for Book object.
+* Book() constructor is invoked to initialize the object.
+
+The Constructor
+* Constructor does not create the object.
+* Its job is to initialize the object after memory is allocated.
+* Without a constructor, you can still allocate memory using new (compiler provides a default one).
+
+
+Object creation without new:
+* Using Class.forName() (reflection)
+* Using clone()
+* Using deserialization
+* Using newInstance()

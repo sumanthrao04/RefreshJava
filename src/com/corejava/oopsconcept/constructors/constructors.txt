@@ -14,6 +14,9 @@ ________________________________________
 10.	What is the role of super() in a constructor?
 o	When does it get called?
 o	What happens if you don’t explicitly write super()?
+Can constructor throw exceptions?,
+Can you call one constructor from another?, What happens if parent has only parameterized constructor?
+
 ________________________________________
 ✅ Advanced-Level / Real-World Use Cases
 11.	How are constructors used in dependency injection in Spring?
@@ -37,3 +40,54 @@ ________________________________________
 o	(Expected: Use constructor with validations or factory methods)
 24.	Is it a good practice to perform business logic inside constructors? Why or why not?
 25.	Have you ever used a factory method or builder pattern to replace constructors? Why was it necessary?
+
+
+
+Why Constructor Cannot Be abstract
+* Abstract methods are meant to be overridden by child classes.
+* A constructor cannot be inherited or overridden — each class defines its own constructor.
+* Hence, making a constructor abstract has no meaning
+
+Why Constructor Cannot Be static
+* static means something belongs to the class rather than an object.
+* But constructors are used to create objects — they run when an object is being created.
+* If a constructor were static, it would mean you can call it without creating an object, which is contradictory
+
+Why Constructor Cannot Be final
+* final in Java means cannot be overridden.
+* But constructors are not inherited, hence they cannot be overridden in subclasses.
+* So making them final has no purpose.
+
+Why Constructor Cannot Be synchronized
+* synchronized ensures that only one thread can access a method at a time.
+* But constructors are not shared like methods — each call creates a separate new object.
+* So multiple threads calling new Book() don’t interfere with each other.
+* Synchronizing constructors is meaningless — instead, you synchronize shared resources.
+* If you need thread-safety during object creation, use: Singleton pattern with synchronized block
+
+The Constructor
+* Constructor does not create the object.
+* Its job is to initialize the object after memory is allocated.
+* Without a constructor, you can still allocate memory using new (compiler provides a default one).
+
+
+Can constructors be inherited?
+* No. Every class defines its own constructors.
+
+Can a constructor return a value?
+* No, not explicitly. But object reference is returned by new.
+
+Can constructor be private?
+* Yes → used in Singleton pattern or factory methods.
+
+Can constructor throw exceptions?
+* Yes, can declare throws clause.
+
+Order of constructor execution in inheritance?
+* Parent class constructor executes first, then child class constructor.
+
+Difference between Constructor and Method
+* Constructor → no return type, auto-called, same name as class.
+*Method → has return type, explicitly called, name can vary.
+
+What happens if you don’t define any constructor in a class?
