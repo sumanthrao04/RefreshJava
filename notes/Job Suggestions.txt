@@ -1,0 +1,229 @@
+SELF INTRODUCTION:
+Good Evening, my name is Rahul Sannat, I have done my BTech in Electronics and Telecommunication from MIT WPU and joined GalaxE Solutions as a fresher in 2022. Since the last 3 years I have been working here as a Software Engineer....most primarily involved in backend development. My skillsets include Java, SpringBoot, SQL, Microservices and I'm passionate about writing clean and maintainable code and enjoy solving real-world problems. I'm looking forward for new opportunities to expand my knowledge and skillsets and to get more exposure and explore new challenges...and I'm eager to apply my skills and contribute to this dynamic organization.
+
+PROJECT EXPLANATION:
+LTS:
+It was an internal tool for employees to apply, edit, and cancel leaves, Work From Home, or Work From Office requests. The earlier version was in .NET, and we rebuilt it from scratch using Java, Spring Boot, and Microservices. I was mainly responsible for creating APIs for the WFO service, along with modifications to the WFH service APIs, SQL query updates in MySQL, bug fixes, and manual testing.
+
+DAMS:
+DAMS stands for Distributed and Mainframe Services. There were two teams, Distributed and Mainframe, I was on the Distributed side which was a Java based middleware setup. The project was of the healthcare domain and it served as a hub connecting the backend teams with the frontend consumers. The whole project owned 250+ services. We used to monitor the services round the clock to ensure the proper running of all the applications. My role in this project was to work on some minor API modifications for some of the services and along with that, I did some load testing for some of the services to check on their performance during high traffic, used to monitor the application through New Relic and worked on setting up the New Relic alerts by working with the cross-functional teams and collaborated with the team to understand and work on the Production support for a small amount of time.
+
+
+
+
+
+
+
+1. Product-Based Mid-Level Companies
+These companies value practical experience over algorithmic puzzles:
+
+Zoho
+
+Nagarro
+
+Tata Elxsi
+
+Freshworks
+
+Yubi (formerly CredAvenue)
+
+BrowserStack
+
+Chargebee
+
+Postman
+
+Clear (ClearTax)
+
+⚠️ These companies might ask basic coding questions, but DSA-heavy interviews are rare. They often test Spring Boot, Java internals, REST API design, and multithreading.
+
+2. Service-Based Companies (Project-Oriented Roles)
+Companies like:
+
+TCS Digital
+
+Wipro (Digital or Fullstack roles)
+
+Cognizant
+
+Capgemini
+
+HCL
+
+L&T Infotech
+
+Tech Mahindra
+
+✅ These companies usually don’t ask advanced DSA. Instead, they focus on:
+
+Real-world Java coding
+
+API integrations
+
+Spring Boot-based microservices
+
+Java 8 features like Streams and Lambdas
+
+3. Startups (Java Backend Roles)
+Startups often prioritize:
+
+Speed of development
+
+Real-world coding experience
+
+API development skills
+
+Companies like:
+
+Scaler
+
+Groww
+
+Razorpay
+
+Zolve
+
+Unacademy
+
+Kutumb
+
+📌 They value Spring Boot, REST APIs, threading, and Java performance. Some may ask basic DSA, but focus is more on system design + coding style.
+
+4. Contractual/Consulting Projects
+You can also look into roles via:
+
+Turing
+
+Toptal
+
+Crossover
+
+Talent500
+
+Works
+
+These platforms connect developers to international or remote clients where DSA is rarely asked, and they test hands-on coding or give project-based evaluations.
+
+📋 Common Interview Focus for Your Profile
+Topic	Asked in These Companies
+Core Java	All product/service-based companies
+Java 8 (Streams, Lambdas)	Very common, especially for clean, modern Java codebases
+Spring Boot	Mandatory for any backend role
+REST APIs	Design, validation, status codes, error handling
+Multithreading	Thread lifecycle, concurrency, Executors, use cases
+Garbage Collection	GC types, memory leaks, tuning basics
+SQL/Database	Basic to intermediate SQL queries
+Project Experience	Real-world problem solving and module ownership
+
+🚫 Companies That Will Ask Heavy DSA (You May Want to Avoid for Now)
+If you're not ready for DSA/Leetcode-style coding, avoid:
+
+FAANG (Meta, Amazon, Google, etc.)
+
+Flipkart, Swiggy, Ola (for SDE roles)
+
+Cure.fit, ShareChat, Meesho (core tech roles)
+
+HackerRank, CodeNation, DevRev (heavily DSA-focused)
+
+✅ Recommendations
+Target Java Developer / Backend Developer roles explicitly mentioning:
+
+Spring Boot
+
+REST API
+
+Java 8+
+
+Multithreading
+
+Microservices (if you have some exposure)
+
+Search on: LinkedIn, Naukri, Hirect, AngelList, Instahyre
+
+Prepare real-world projects and explain them clearly in interviews.
+
+Practice system design at a basic level (high-level API design, DB choices, RESTful service structure)
+
+(-2) + (-2) - (-2) * (-2) / (-2)
+(-2) + (-2) - (-2) * 1
+-2 -2 + 2
+-2
+
+i = i*i = i/i;
+i = i/i = 11/11=1
+i = 1
+
+BRITISH TELECOM:
+
+If Service A is dependent on Service B and Service A is having data inconsistency, then how will you rollback the Service B ?
+SAGA Pattern - Microservices
+Profiles - SpringBoot
+Transactions - Springboot
+What idempotent CRUD operation would you choose when we are hitting the request multiple times and the result is the same ?
+Java 8 features
+Functional Interface
+Why Default method was introduced in Java8 ? What was the requirement ?
+Difference between Static and Default method ?
+What will happen if I give more than 1 abstract method in the functional interface ?
+Why Static and Default methods are allowed in Java8 ? What advantage does it serve ?
+What is Dependency Injection ?
+What is IOC Container ?
+What is @ComponentScan ?
+Hashmap internal working
+Hashmap vs Hashset
+ArrayList vs LinkedList
+DROP TRUNCATE DELETE (Which is faster?)
+WHERE vs HAVING
+LEFT JOIN vs INNER JOIN
+How will you handle exceptions globally ?
+How do you communicate between the services ? Rest Template is the sychronous way, whats the asychronous way ?
+What is immutability ? How to make a class immutable ?
+
+CODING:
+Print the duplicate elements from the list
+Print the numbers from the array whose sum equals 9
+
+QUERY:
+Write query to get the products who didn't get any orders placed
+
+
+Sathish Mamidala mock interview:
+Java8 features 
+What is Functional Interface ? Types of Functional Interface.
+Write a functional interface and a lambda expression associated with it.
+Hashmap Internal Working
+Difference between Hashmap and Concurrent Hashmap
+How do you handle exceptions ?
+How do you create Global exceptions ?
+Can you have multiple catch blocks ?
+What is @SpringBootApplication annotation ?
+What to do if I want to remove Tomcat server and add any other server ?
+What is Bean and bean lifecycle ?
+What is Dependency Injection ? Types of Dependency Injection and which one is preferred and why ?
+How to make a class immutable ?
+What is @RestController ?
+Difference between @RequestParam and @QueryParam
+What is @PathVariable ?
+How to communicate between two services ?
+What is Circuit Breaker ? What is open and close state ?
+What is Indexing ? Interal working of Indexing.
+What is Left Join ? 
+Difference between Right Join and Inner Join ?
+Difference between Drop and Truncate ?
+Difference between Union and UnionAll.
+What is Executor Framework ?
+What is SAGA Pattern ?
+
+Coding:
+1) Take a string as input and based on the time complexity, reverse the string using either two pointer approach or recursion
+2) Take a string as input and display the frequency of each character.
+
+Query:
+Display the second highest order from the Customer table
+
+Code Snippet:
+try{
+}catch(Exception e){
+}catch(ArithmeticException e){}
+Correct or not and why ?

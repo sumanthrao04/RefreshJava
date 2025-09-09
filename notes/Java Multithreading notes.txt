@@ -1,0 +1,172 @@
+THREAD:
+A Thread is the smallest unit of execution within a process. A process can have multiple threads, which share the same resources but can run independently.
+
+MULTITHREADING:
+Multi threading refers to the ability to execute multiple threads within a single process concurrently.
+
+When a Java program starts running, one thread starts running immediately, which is called the main thread. This main thread is responsible for running the main method of the program.
+
+To create a thread in Java, we can either extend the Thread class or implement the Runnable Interface.
+
+If we are creating a class and extending to Thread, then we have to @Override the run() method to write the piece of logic that we want the thread to run. And then in the main class we have to create an instance of that class and write instanceName.start(). This start() will start the thread.
+If we are implementing the Runnable Interface instead of extending the Thread class, then the run() method will still be overriden but in the main class, since start() is a method of Thread class and we are no longer extending Thread class, so to start the thread, first we have to create an instance of the class and then we have to create an instance of the Thread class and pass the instance of the class into the constructor of the thread class and then we can use the instance of the thread class to call the start() method to start the thread.
+
+start() method is used to register a thread with the thread scheduler so that one can tell what the child thread needs to perform, when and how it will be scheduled using thread scheduler.
+
+LIFECYCLE OF A THREAD:
+New -> A Thread is in this state when it is created but not yet started.
+Runnable -> After the start method is called, the thread becomes runnable. It's ready to run and waiting for CPU time.
+Running -> The thread is in this state when it's executing.
+Blocked/Waiting -> A thread is in this state when it is blocked or waiting for another thread to finish execution.
+Terminated -> A thread is in this state when it has finished execution.
+
+sleep(time in milliseconds) -> It stops a thread for the mentioned amount of time.
+join() -> It waits for the thread for which join() is called, to terminate so that the current thread will resume its execution.
+
+Difference between Thread and Runnable Interface:
+If a class is extending another class then we can't extend Thread class as Java doesn't follow Multiple Inheritance, so at that time we have to implement Runnable Interface.
+Example -> class A extends class B implements Runnable Interface
+
+interrupt() -> It interrupts the running state of a thread.
+yield() -> It hints the scheduler to give chance to other threads to run parallely as well, so that a particular thread won't run from start to end continuously.
+setDaemon(true) -> It is a background thread that runs and JVM ignores it. Daemon thread must be called before starting a thread. Calling it after thread is started will give IllegalThreadStateException
+
+SYCHRONIZED:
+It ensures that only one thread can access the critical section (a block of code or a method) at a time if there is a shared resource.
+When multiple threads access and modify the same resource (like a variable, object, or file), data inconsistency or corruption can occur. This is called a race condition.
+synchronized helps to prevent race conditions by locking the resource so that only one thread can work on it at a time.
+
+public void increment() {
+    synchronized (this) {
+        count++;
+    }
+}
+This locks only the specific block of code, not the whole method. Useful when you want to synchronize only part of the method.
+
+LOCKS:
+If there are multiple threads that want to access the same shared resource then we use synchronized keyword that will give access of that resource to only one thread at a time i.e it will lock that resource for that particular thread, and it will lock for another thread once the previous thread is done with its execution.
+Locks provide flexible locking where we can decide when to lock and unlock a thread.
+
+Other way of achieiving thread safety other than using synchronized is, by using ConcurrentHashMap, AtomicInteger, Volatile, ExecutorService.
+
+There are two types of Locks:
+Instrinsic: These are built into every objects in Java. We don't see them but they are there. Once we use synchronized keyword we are using these automatic locks.
+
+Exclusive: These are the advanced locks that we can control by using the Lock class. Through this we can have more control over the locks as to when to lock and unlock them as required.
+
+Reentrant Lock -> Reentrant means a thread can acquire the same lock multiple times without getting blocked.
+
+Deadlock -> A deadlock occurs when two or more threads wait for each other to release the lock but they never do.
+
+Dead lock prevention -> Either by avoiding nested locks, by applying tryout(timeout, TimeUnit)
+
+lockInterruptibly() -> Unlike lock(), lockInterruptibly() responds to thread interruption while waiting for the lock. If the thread is interrupted while waiting, it doesn't block forever — it throws an InterruptedException.
+
+Fairness -> Fairness in multithreading refers to the order in which threads are allowed to acquire a lock, particularly when multiple threads are waiting for the same resource.
+Fairness means the thread that has been waiting the longest gets access to the lock first (first-come, first-served).
+Java’s ReentrantLock has a constructor that allows you to specify whether it should be fair or not.
+It avoids starvation which means there might be one of the threads thats waiting for a long time to acquire the lock but not getting it's turn. 
+
+Example:
+ReentrantLock fairLock = new ReentrantLock(true);   // fair lock
+ReentrantLock unfairLock = new ReentrantLock(false); // default (unfair)
+
+READ WRITE LOCKS:
+In Java, Read and Write locks are provided by the ReentrantReadWriteLock class. They allow multiple threads to read a shared resource simultaneously, but only one thread to write, and only when no readers are active.
+This helps improve performance in scenarios where reads are frequent and writes are rare.
+
+Gives two kinds of locks:
+Read Lock: readLock()
+Write Lock: writeLock()
+
+Example Scenario:
+10 threads want to read a file.
+They can all acquire the read lock at the same time.
+If one thread wants to write, it has to wait until all read locks are released.
+
+
+Disadvantages of Synchronized locking:
+1) No fairness
+2) Indefinite blocking
+3) No Interruptibly
+4) No control over locking and unlocking 
+
+THREAD COMMUNICATION:
+Ek thread ko wait karna padta hai doosre thread ke kaam poora hone ka
+Ya ek thread ko doosre thread ko signal dena padta hai ki "ab tum kaam shuru kar sakte ho"
+Without proper thread communication mechanism, threads might end up in inefficient busy-waiting state, leading to wastage of CPU resources and potential deadlocks.
+
+There are 3 methods that are used for Thread Communication:
+wait() -> Causes the current thread to pause (wait) until another thread calls notify() or notifyAll() on the same object or the thread is interrupted.
+Must be called within a synchronized block/method on the object it’s waiting on.
+
+notify() -> Wakes up one thread that is waiting on the object’s monitor. The awakened thread does not proceed immediately — it must reacquire the object's lock first.
+
+notifyAll() -> Wakes up all threads that are waiting on the object. All awakened threads then compete for the object lock.
+
+All these 3 methods can only be used inside a synchronized method or a synchronized block of code.
+
+| Method        | Hindi meaning                                                                |
+| ------------- | ---------------------------------------------------------------------------- |
+| `wait()`      | "Main ruk gaya hoon, mujhe signal milne tak kuch nahi karunga"               |
+| `notify()`    | "Ek thread ko jaga do jo wait kar raha tha"                                  |
+| `notifyAll()` | "Sab wait kar rahe threads ko jaga do"                                       |
+| Synchronized  | "Ye sab sirf ek hi thread ek time mein kar sakta hai — race condition na ho" |
+
+
+
+Functional Interface:
+A Runnable Interface which has only one abstract method (Single Abstract Method) i.e only one method in the interface which doesn't have body, it is called as Functional Interface.
+Runnable Interface is a Functional Interface because it just have one Abstract method i.e run() method.
+
+Executor Service:
+submit()
+shutdown()
+shutdownNow()
+awaitTermination()
+isShutdown()
+isTerminated()
+invokeAll()
+
+Future:
+get()
+isDone()
+isCancelled()
+get(Time)
+
+Scheduled Executor Service:
+schedule()
+scheduleAtFixedRate()
+scheduleWithFixedDelay()
+
+newFixedThreadPool vs newCachedThreadPool
+
+CountdownLatch -> Used when we want multiple threads to wait for their completion. It makes one or more threads wait until a set of operations in other threads complete.
+Imagine you're launching a rocket 🚀, but you need 3 systems to report "ready" before the launch:
+Fueling ✅
+Navigation ✅
+Communications ✅
+Only when all 3 say “ready”, the launch control proceeds. That’s what CountDownLatch does: it waits until the count becomes 0, then allows blocked threads to continue.
+
+Method       | Description
+await()      | Causes the current thread to wait until the count reaches 0
+countDown()  | Decrements the count of the latch by 1
+getCount()   | Returns the current count
+
+You create a latch with a count:
+
+CountDownLatch latch = new CountDownLatch(3);
+
+3 threads (or tasks) will call latch.countDown() when done.
+The main thread calls latch.await(), blocking until the count becomes 0.
+
+
+Volatile keyword:
+A volatile keyword helps the reader thread to update it's value as soon as the writer thread updates the value of an element, meaning it reads the updated value of the element by reading the value directly from the main memory instead of reading it from it's local memory where it has cached the old value.
+Volatile keyword follows asynchronous pattern.
+
+Atomic keyword:
+Atomic keyword lets the threads work separately and gives the accurate result even without applying locks and is thread safe.
+
+Synchronous -> One thread waits for another thread to complete it's execution, then only the other thread moves forward with it's execution.
+Asynchronous -> Multiple threads run parallely.

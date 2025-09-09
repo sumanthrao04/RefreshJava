@@ -1,0 +1,114 @@
+GARBAGE COLLECTION:
+
+JVM uses garbage collectors to automatically remove unused objects, freeing up memory in the background, so developers don't have to do it manually.
+
+HEAP AREA:
+Heap Area is a shared runtime data area which stores objects and arrays.
+The memory in heap is allocated for class instances, arrays and class interfaces.
+It is created when JVM starts.
+It's size can be fixed or dynamic depending upon the system's configuration.
+When we use 'new' keyword, the object gets stored in the heap and the reference gets stored in the stack.
+NOTE: Garbage Collection in heap is mandatory.
+
+Heap Memory is divided into several regions:
+Young Generation: The area within the heap where new objects are generally allocated.
+Old Generation: The area within the heap where long-lived metadata objects are stored after surviving multiple garbage collection cycle.
+Permanent Generation: It stores metadata about classes and methods.
+
+METHOD AREA:
+Method Area is a logical part of heap.
+It is created when JVM starts.
+Method Area is used to store class-level information like Class structures, static variables, Method bytecodes, Interfaces, Constant pool.
+It's size can be fixed or dynamic depending upon the system's configuration.
+NOTE: Even though Method Area is a logical part of Heap, it may or may not be garbage collected even though garbage collection is mandatory in heap.
+
+NOTE: 
+Static variables are stored in Method area.
+Instance variables are stored in Heap.
+Local variables are stored in Stack.
+
+STACK:
+A Stack is created when a thread is created.
+Each thread has it's own stack ensuring thread safety.
+Stack memory block stores method execution data including local variables, method arguments and return addresses.
+Size can be fixed or dynamic and it can be set during stack creation.
+Stack not necessarily needs to be contiguous, meaning -> the memory blocks need not to be side by side in RAM, it gets allocated based on the spaces available and can be managed using pointers.
+Once the method execution is completed, JVM removes the memory block automatically.
+
+NATIVE METHOD STACKS:
+Native Method is also known as C Stack.
+It is not written in Java language.
+This memory is allocated for each thread when it is created.
+It's size can be fixed or dynamic.
+It handles the native methods that interact with the Java code.
+
+Working of Garbage Collector:
+Garbage Collector removes unused objects that are no longer needed. It runs in the background to free up memory.
+It finds the objects that are no longer needed and removes them automatically, freeing up memory for new objects.
+New objects are collected more frequently compared to older objects which ensures improve efficiency.
+We can request for Garbage Collector by System.GC() and Runtime.GC() but ultimately JVM only decides when it should run.
+
+GARBAGE COLLECTOR:
+In Java, The garbage collector is responsible for reclaiming memory by destroying objects that are no longer in use. When an object becomes unreachable that means no active reference points to it, it then becomes eligible for garbage collector. The garbage collector removes those objects freeing up the memory in the heap.
+
+Types of Garbage Collectors:
+Serial Garbage Collector: It is the simplest type of garbage collector. It uses a single thread to handle all garbage collection tasks.
+Parallel Garbage Collector: It is the default garbage collector in Java 8. It uses multiple threads to perform garbage collection tasks but stops all application threads during garbage collection.
+Concurrent Mark-Sweep Garbage Collector: It also uses multiple threads to perform garbage collection but keeps the application running, minimizing the pause time.
+
+
+DIFFERENCE BETWEEN STACK MEMORY AND HEAP MEMORY:
+
+Stack Memory allocates memory for the local variables, method calls and return addresses when a function is running.
+Heap Memory allocates memory for the objects created, and arrays.
+
+In Stack Memory, the object's reference is stored.
+In Heap Memory, the object is stored.
+
+In Stack Memory, the memory is freed up automatically as soon as the method execution is done.
+In Heap Memory, the memory is not freeud up automatically, it needs garbage collector.
+
+Stack Memory is safer because it can only be accessed by the owner thread.
+Heap Memory is less safer because it can be accessed by multiple threads that can lead up to data corruption and memory leaks.
+
+If too many method calls are there that exceeds the stack capacity, it throws Stack Overflow error.
+If Heap memory is full, it throws Out Of Memory error.
+
+Stack Memory is faster because of automatic memory allocation.
+Heap Memory is slower because of manual allocation.
+
+Stack memory frees up memory as soon as method execution is done.
+Heap memory persists as long as the entire application is running.
+
+Stack is not flexible. The memory size allotted cannot be changed.
+Heap is flexible. The memory size allotted can be altered.
+
+
+How to make an Object eligible for Garbage Collection ?
+* By nullifying the reference variable (obj=null)
+* By re-assigning the reference variable (obj = new Object())
+* An object created inside a method (eligible after method execution)
+
+MEMORY LEAKS:
+There might be situation when an application has created lots of objects and does not use them but all of those objects have references so Garbage Collector can't destroy them. Such type of useless objects are called Memory Leak. If the allocated memory goes beyond limit, the program will be terminated saying Out of Memory error.
+
+HOW TO AVOID MEMORY LEAKS ?
+1) By nullifying object reference
+
+2) Beware of static fields
+Static variables live for the lifetime of the application, so if they point to big objects (like caches, lists), those objects will never be garbage collected.
+✅ BETTER: Use WeakReference / or clear them when not needed.
+
+3) Be careful with collections (List, Map, Set)
+Collections keep references to their elements.
+If you forget to remove elements, the memory will stay used.
+✅ Solution:
+Remove unused elements manually (list.clear(), map.remove(key))
+Use WeakHashMap for automatic GC of keys
+
+4) Use WeakReference when needed
+For large objects that you don’t want to prevent from being GC’d, use WeakReference.
+WeakReference<MyObject> ref = new WeakReference<>(new MyObject());
+🧠 Matlab: "Mujhe object chahiye jab tak system ke paas memory hai, warna tum isko hata do."
+
+5) Close resources (file, DB, network connections) using try-with-resources

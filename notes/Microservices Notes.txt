@@ -1,0 +1,76 @@
+MICROSERVICES:
+
+ADVANTAGES OF MICROSERVICES:
+Works independently
+Doesn't need to test the whole application
+If one module or service fails, it won't affect the other services
+Developer doesn't need to know about all the services
+All services are separately deployable.
+
+SERVICE REGISTRY:
+Suppose we have multiple microservices and they are running on different servers so it is not possible to remember all the IPs and port numbers of the servers to form the connection between the microservices, so Service Registry is the center location where it stores all the IPs and port numbers of the servers in the form of a map or a list or a database. Suppose Service-A wants to connect with Service-B, first the two applications will start then it will register the IPs and port numbers to the Service Resgistry that will contain all the information about the two services.
+Service Registry keeps track of the services information and it's advantage is that we don't need to mention the IP address to call a service, we can simple mention the name of the service to call it, even if the IP address gets changed.
+
+Now suppose there are 4 instances where Service-B has been deployed and 1 instance of Service-A. Suppose Service-A wants to connect to Service-B, the load balancer will query to the Service Discovery asking if it knows what are the instances of the Service-B. The Load Balancer will dispatch to one of the servers by looking at the Service Registry and check which instance has lesser load and send the request to that instance.
+
+Types of Service Discovery:
+1) Client Side
+2) Server Side
+
+
+API Gateway:
+If we have hundreds of microservices then we don't have to remember the ports of all the services, we can just use the port number of API Gateway for all the services while hitting the request.
+
+To register our microservices into the Service registry e.g Eureka, we have to follow some steps:
+1) Add dependencies like cloud-starter, netflix-eureka-client
+2) Add @EnableEurekaClient annotation after @SpringBootApplication in the main class
+3) Add fetch-registry and register-with-eureka properties in the application.properties file and mark them as true
+
+We use REST Template or Feign Client to communicate between two services.
+Suppose we have a User service and a Rating Service, if we are calling the API to get a user by giving it's userId, we have to get the ratings given by that particular user as well, and that ratings should come from the Rating service. For that we have to first create a bean of rest template, either in the main class itself or we can create a separate Configuration class and create any number of beans we want as per our requirement. After creating the rest template bean, we can autowire the rest template in the User Service implementation class. Now, in the getUser method, we can use restTemplate.getForObject() method and paste the URL we took from postman. In this way we can establish the communication between two services.
+
+An illustration:
+ArrayList<Rating> ratingsOfUser = restTemplate.getForObject("http://localhost:8083/ratings/users/892ef915-a1a2-4796-aae2-43f6b704d73b", ArrayList.class);
+Now, to make it dynamic, we can do -> ArrayList<Rating> ratingsOfUser = restTemplate.getForObject("http://localhost:8083/ratings/users/892ef915-a1a2-4796-aae2-43f6b704d73b"+user.getUserId(), ArrayList.class);
+
+We can replace localhost:8083 with the service name mentioned in Eureka to make it dynamic and we can use @LoadBalanced annotation with the @Bean annotation used for Rest template to use load balancer and to make the service name in the URL recognizable.
+
+Feing Cliet is also similar to Rest template but it uses declarative approach. It follows declarative approach means that while we create an interface and create a method using GetMapping or PostMapping, Springboot will use the details of the declared method and provide us the implementation of it from it's parent service or the original service that we are trying to bind in our actual service.
+To use Feign we just have to create an interface and use some annotations.
+We have to use Open Feign dependency
+
+To implement API Gateway, we have to create one more microservice as Api Gateway is itself a microservice and have to register it to the Eureka server, then in the application.properties we have to mention:           
+          id: user-service
+          uri: lb://USERSERVICE
+          predicates:
+            - Path=/users
+            - Path=/users/**
+These id, url and predicate paths for all the services. Now, just by giving the port number of Api Gateway we can access all the microservices endpoint.
+
+CONFIG SERVER:
+Whatever configurations we are having in our local configurations e.g configurations in our application.properites file, we can externalise them or we can move those local configurations to cloud named Config Server. It's advantage is that we don't have to repeat the configurations for each microservice and can directly make the changes in the Config Server.
+
+FAULT TOLERANCE:
+Circuit Breaker is one example of managing fault tolerance. Suppose User Service is calling Rating Service, which means User Service is dependent on Rating Service, so if Rating Service goes down then the Circut Breaker opens the connection (the flow is broken). If the services ar up and running then the Circuit Breaker closes the connection (the flow is resumed). Then there is the 3rd state i.e the Half Open state. If User Service is calling Rating Service and the success rate of successful API call is greater than the failure rate than the Circuit Breaker is closed and if the failure rate is greater than the success rate then the Circuit Breaker is opened.
+Circuit Breaker is implemented with the help of Resilience4J, earlier it was used to be implemented by Hystrix which is not much in use now.
+
+We implement the Circuit Breaker on the controller method which is calling other services and write:
+@CircuitBreaker(name="ratingHotelBreaker", fallbackMethod = "ratingHotelFallback") 
+below @GetMapping or @PostMapping or the other two mappings. Here name specifies the name of the circuit breaker and fallback method is the method that is called when the the service we are calling is down, so we have to create a fallback method as well with the same name what we have provided in the Circuit Breaker's fallbackmethod parameter, and we have to make sure that the fallback method return type and the parameters should match the method name and the parameter of the actual controller method which is calling the other services.
+
+@Retry -> This is also one feature we use while using Resilience4J to deal with Fault Tolerance. 
+@Retry(name="ratingHotelService", fallbackMethod = "ratingHotelFallback") 
+This is how we use it in the same controller method which is calling other services, so Retry helps to retry calling the service which is not sending back response for a fixed number of times (the number of times is user defined in the application.properties) and for a fixed interval of waiting state to get back the response after each retry (the waiting interval is also user defined). If the service doesn't send back the response for that specified number of retry calls then the fallback method is executed.
+
+RATE LIMITER:
+DOS(Denial of Service) attack
+Rate Limiter provides the functionality to limit the number of calls happening to a particular service in a specific amount of time.
+It provides Security by preventing DOS(Denial of Service) attack and improves performance by limiting the number of calls. This Rate Limiter prevents the service from crashing if there are huge number of calls heppening that the service can't handle. So, for example if we put the rate limiter as 100 calls per second then the client can't make 101 calls per second.
+For using Rate Limiter, we have to use the same controller method where we had been using Circuit Breaker and Retry which was calling other services.
+To use Rate Limiter, we can write like this:
+@RateLimiter(name="userServiceLimiter", fallbackMethod = "ratingHotelFallback")
+And in the application.properties, we can give 3 properties:
+limit-for-period=5       (limits to 5 requests)
+limit-refresh-period=10s (limits to 5 requests in 10 sec timeframe)
+timeout-duration=0       (the amount of time a thread needs to wait)
+For testing purpose, we can use JMeter where we can define the number of threads making the request, we can provide the url and the port number and then test the result.

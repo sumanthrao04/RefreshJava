@@ -1,0 +1,22 @@
+SPRING SECURITY:
+
+FILTER CHAINS:
+All controllers get converted into servlets and we are able to run the application on tomcat because of servlets only.
+Before the request goes to the controller, we have Front Controller first which is called DispatcherServlet.
+When we apply Spring Security dependency, there forms a filter chain even before the front controller. So when the request comes, it first goes to the filter chain and from there it goes to the front controller and then from front controller it goes to the controllers.
+There's a SessionId that gets generated everytime we login to the page.
+To get that SessionId printed, we give the HttpServletRequest in the parameter of the controller method. As mentioned earlier that everything working behind the scene is a Servlet (for example a controller is also a servlet), there are two types of servlets, HttpServletRequest and HttpServletResponse.
+Till now the password had been auto-generating in the console. To customize the username and password we make add the properties in the application.properties like below:
+spring.security.user.name=rahul
+spring.security.user.password=rahul@123 
+
+CSRF (Cross Site Request Forgery):
+When a client sends a request to the server, we also have to send the login details for the very first time. After that when we get the success response of logging in, along with that we also get a SessionId which remains same even after multiple page refresh, which tells the server that, this user has already logged in so no need to ask the credentials again even if the user hits different requests.
+But as it saves time for the user from logging in again and again, it has disadvantage as well, suppose there's a malicious site and you hit on it, the server will identify the session id and as it was valid from the last sign in , it will give access to that malicious site. This problem is called CSRF.
+NOTE: Apart from GET mapping, if we are working on any other CRUD operations, that requires updating of values, we need to send the CSRF token as well. If we don't send then even if we are trying to post a value in Postman by providing the username and password, still we'll get a 401 unauthorized response.
+To generate a CSRF token, we can create a controller method like this:
+@GetMapping("/csrf-token")
+    public CsrfToken csrfToken(HttpServletRequest request) {
+        return (CsrfToken) request.getAttribute("csrf");
+    }
+Now hit the request and get the token from the response. Now go to Headers in Postman and add key as X-CSRF-TOKEN and paste the value we got from the response. After doing this we can hit any crud operation request in postman and we'll get the response. (keep in mind that all these authorization issues are arising because we are using Spring Security dependency).	

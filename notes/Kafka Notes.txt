@@ -1,0 +1,126 @@
+KAFKA:
+
+Kafka is an open source distributed event streaming platform. It is desgined to handle continuously generated data smoothly without any delay.
+Kafka takes in huge amount of data and breaks it into parts and distributes them according to categories into multiple servers which provides scalability, fault tolerance and flexibility.
+Scalability -> Since Kafka can handle large amount of data by breaking them into pieces or partitions and distributing them into multiple servers.
+Fault Tolerance -> If a server fails, it won't affect the flow as Kafka makes the copies of the data.
+Flixibility -> Because Kafka can work on any type of data like logs, events, structured data etc.
+
+Kafka Cluster contains a group of Kafka Brokers
+Kafka Producers writes the data into Kafka Cluster.
+Kafka Consumers consume the data from the Kafka Cluster.
+Zookeper keeps the track of Kafka Cluster's health. Zookeper provides the platform to run Apache Kafka server.
+
+Kafka Connect:
+Kafka Connect has Source and Sink. Kafka Connect is used when we want to insert data of an external entity into the Kafka Cluster.
+Source gives the data from the external entity to the Kafka Cluster.
+Sink receives the data from the Kafka Cluster.
+
+Kafka Stream:
+We take data from the Kafka Cluster, perform some data transformation and give it back to the Kafka Cluster.
+
+TOPIC:
+Topic is just a container that contains similar data, e.g student records in student container, teacher records in teacher container.
+Unique identifier of a topic is it's name. They live inside the Kafka Broker.
+Producers write the message to topics which is then sent to the Partitions. Or Producers can directly send the message to the Partitions.
+
+PARTITION:
+A topic is divided into partitions.
+The messages are stored in partitions only.
+Partitions are independent of each other.
+We must define the number of partitions while defining the topic (the number of partitions can be changed later).
+Each partition is an ordered, immutable sequence of records.
+Each message is stored in a partition with an incremental id known as it's Offset value.
+Partition continuously grows (Offset increases) as the messages are produced.
+All the records exist in distributed log files.
+Ordering of data is done at the Partition level only.
+There are two ways of sending data to the Partition, one is with key, the other is without key.
+If we send data without key, then the data goes to the Partitions in a Round-Robin manner, meaning, the first data will go to Partition1 then the second data wil go to Partition2.
+When we send data with a key, then the ordering is maintained as the data is going to the same partition. When we use key then the Partition performs hashing and decides the Partition.
+
+CONSUMER OFFSET:
+It is the position of a consumer in a particular partition of a topic.
+It represents the latest message that the consumer has read.
+When a Consumer is created, it is assigned a consumer group id. A Consumer group contains a group of consumers. Each consumer of a consumer group reads messages of a specific partition of a topic. For example, Consumer1 reads messages of Partition1, Consumer2 reads Partition2, Consumer3 reads Partition3. Each Consumer keeps track of where it has reached or at which index of the partition it has reached, it keeps a bookmark of it. This is only called as a Consumer Offset.
+
+How Consumer reads the data?
+When a Consumer joins a Consumer Group, a join request is sent to the group coordinator.
+The group coordinator assigns the partitions to the Consumer based on the number of consumers in the group.
+Then the Consumer starts consuming data from the assigned partitions.
+
+Consumers stick to the same partition as long as the consumer is in the consumer group. It will never be assigned a new partition.
+
+SEGMENT:
+A Segment is a set of messages in a partition of a topic. We can define the size of a segment.
+
+RETENTION POLICY:
+Retention Policy is the policy of retaining a data in a segment.
+It provides 2 options:
+1) Time based -> The default time of retention of a segment is 168 hours. After that the data gets removed.
+2) Size based -> If the size of the data exceeds the size of the segment then a new file gets created to store the data.
+
+REPLICATION FACTOR:
+Suppose we have specified the replication factor as 3 and suppose we have 3 partitions in a topic, so there will be 3 replications of the topic. So when a Producer produces a message and sends it to a broker then there will be 3 replications of the broker so that if the broker goes down still the data will be protected. This is called fault tolerance.
+
+The leader of the broker gets decided on the basis of Partition level. Broker leader means at which broker the message will be sent first.
+So suppose Partition 3 is assigned to Broker 1, Partition 1 is assigned to Broker 2 and Partition 2 is assigned to Broker 3, now if the message goes to Partition 3 then Broker 1 will be the leader and the message will be replicated to the other 2 partitions of the other 2 brokers, if the message goes to Partition 1 then the leader will be Broker 2 and if the message goes to Partition 2 then the leader will be Broker 3
+
+Kafka Core APIs:
+1) Producer API - To produce the message to the message queue
+2) Consumer API
+3) Streams API
+4) Connector API
+
+Topics are buckets inside a message queue, used for differentiating the messages.
+
+As Kafka is fault tolerant, so any data that is being written to the Kafka Broker, the data gets replicated into other broker as well, so that if the main broker dies, the data is still there in the replicated broker, which provides the fault tolerant feature.
+
+How do you know that Producer has to write to which Partition ?
+public ProducerRecord(String topic, Integer partition, K key, V value, Iterable<Header> headers) -> Producer writes to the Broker leader and through the parameter we define which topic of the Broker leader to write to, then the partition is also defined in the parameter to which the message needs to be written and if not mentioned then Kafka only decides the default partition. Offset is the unique id of the message in the partition. Kafka has offset management so it decides which offset the message should go to.
+Now to consume the messages, Consumer reads the messages from the offset one by one, by going inside the Broker leader and inside the topic and partition. It reads offset1, then offset2, then offset3 etc. Once all the offsets are read, the consumer acknowledges the Kafka that all messages are read then Consumer commits the offset. Why does Consumer commits the offset ? Because after committing, the consumer dies. Suppose there are multiple consumers and Consumer1 has read the offsets. After committing, Consumer1 dies, so if Consumer1 comes back to life it won't have to re-read the offsets from the beginning. It will continue to read from the new incoming offset, so that there will be no duplicacy of the offset messages.
+
+public ProducerRecord(String topic, Integer partition, K key, V value, Iterable<Header> headers) -> In the parameters, topic and value are compulsory, rest other parameters are optional because Kafka can manage them on their own.
+
+Topics :
+Topics are categories to which messages are published. Topics can be divided into partitions for scalability and parallelism. Scalability because if there are loads of messages being published so the partitions keep on increasing for the incoming messages. Parallelism because multiple consumers from different consumer groups can read the logs from the same partition parallely.
+NOTE: Only one consumer from a consumer group can read from a partition, each consumer from each consumer group can read the same partition parallely.
+
+Partition:
+Each topic is divided into Partition. Partitions allow Kafka to distribute and parallelize the processing of messages.
+
+Broker:
+Kafka Brokers are individual servers inside Kafka Cluster. They store and manage data, handle producers and consumers requests and participate in the replication and distribution of data.
+
+Consumer:
+Consumers are organized into Consumer Groups.Each group processes a subset of partitions, allowing for parallel processing and load distribution.
+
+Offset Management:
+Offset represent the position of a consumer within a partition. Consumers commit offsets to Kafka, tracking their progress. This ensures that they can continue from the last committed offset in case of failures or restart.
+
+Log Compaction:
+Kafka provides log compaction in which the latest message for each key in a partition is retained, the older one is removed.
+
+Kafka Connect:
+Kafka Connect is a framework to integrate Kafka with external systems e.g Splunk to show the logs.
+
+Kafka Streams:
+Kafka Streams is a stream processing library that helps to show the logs coming from the backend applications to the splunk that can be seen by the users.
+
+Kafka Architecture Flow:
+The Producer sends the message to the leader partition of the specified topic.
+The replication is done at the partition level.
+Leader replicates messages to the followers, ensuring they have the same set of data.
+ISR(In Sync Replica) represents data that are up to date with the Leader.
+Consumer always reads from the leader partition. Once read, the consumer acknowledges the Kafka that it has successfully read the messages and commits the offset, so that in case of failure, it can come back and read from the same offset.
+The leader ensures that the followers are kept in sync.
+
+Fault Tolerance:
+In case of leader or broker failure, Kafka ensures quick leader election from the in sync replicas that is handled by the Zookeeper.
+
+Role of Zookeeper in Kafka:
+1) Cluster management:
+Leader election
+Broker registration and management
+2) Topic and Partition management
+3) Consumer Group management
+4) Broker and Topic health monitoring
