@@ -1,0 +1,7 @@
+Lambda expression
+What is a Lambda Expression?
+•	Lambda expressions in Java, introduced in Java SE 8.
+•	It provides a clear and concise way to represent instances of functional interfaces (interfaces with exactly one abstract method).
+•	A lambda expression is essentially an anonymous function (a function without a name) that can be treated as an object and passed around.
+
+
