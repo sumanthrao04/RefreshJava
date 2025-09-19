@@ -1,0 +1,157 @@
+HLD (High Level Design):
+
+CAP Theorem:
+CAP stands for
+C - Consistency
+A - Availability
+P - Partition Tolerance
+CAP Theorem is a desirable property of a distributed system with replicated data.
+
+Explanation with example:
+Suppose there is an application A, a DB node B in some region or country and a DB node C in another region or country.
+DB nodes B and C communicate between each other. So suppose application A queries or writes something to DB B (for example a=4). It will be be replicated in DB C as well. So, if application A updates the value of a=4 to a=5 in DB B, application A will get response from DB C with the updated value of a=5 because it got replicated with the updated value of DB B. This is how C - Consistency happens.
+A - Availability states that all the DB nodes are available even if there's a failure in any node, the failing node will still send a response with a failure response.
+Even if there's a communication breakage between the two nodes, still A is able to query on both the nodes. That means the system is up. This is Partition Tolerance.
+There are some possibilities of combinations of CAP theorem:
+Possibilities are -> CA, CP, AP
+Impossibility is -> CAP
+Partition Tolerance is very important to keep, it should never be traded off. So whenever we need to decide the combinations from the possibilities, we should choose either AP or CP.
+
+
+STRANGLER PATTERN:
+When we are refactoring our application from monolithic architecture to microservices architecture, we don't directly stop the 100% traffic coming to monolithic application and redirect it to microservices application. For example, we first start giving 10% traffic to microservices and 90% to monolithic, if everything looks good then we keep on increasing the percentage of traffic to microservices and reducing the percentage in monolithic until microservices is capable of taking 100% traffic. This refactoring process is called Strangler Pattern.
+
+Database Management in Microservices:
+2 types of management:
+1) Database for each individual service
+2) Shared Database
+
+SAGA PATTERN:
+SAGA Pattern means Sequence of local transactions. It works for Database for each individual service.
+
+SAGA Pattern has two types:
+1) Choreography
+2) Orchestrator
+
+SAGA Pattern Working:
+Suppose there are 3 microservices A, B, C and 3 DBs associated with them as DB1, DB2, DB3 respectively. Now if a request comes for a transaction which involves all the 3 DBs, then first the service A will perform the operation and if the operation is successful, then it will publish an event which will be listened by service B. Then service B will perform the operation and if it is successful then it will again publish an event and that event will be listened by service C. Now if service C fails to perform the operation, it will publish a failure event that will be listened by Service B and then service B will rollback it's operation and publish the event, which will be listened by service A and A will rollback it's operation.
+
+Interview Question related to SAGA Pattern:
+If Service A is dependent on Service B and Service A is having data inconsistency or any other operation failure, then how will you rollback the Service B ?
+Answer is -> By using SAGA Pattern.
+
+CQRS Pattern:
+CQRS stands for Command Query Request Segregation
+Command has Create, Update, Delete operations
+Query has Select query
+
+CQRS Pattern Working:
+Suppose there are 2 microservices A and B and both have their respective DBs DB1 and DB2. We know that both the DBs can't directly interact with each other. So, we create a View which is a virtual DB containing all the required tables for both the DBs. This View is read-only. Now, if any (create, update, delete) operation happens in A or B, an event will be published which will be listened by the View and it will update the corresponding data automatically. This is CQRS Pattern working.
+
+Scaling from ZERO to MILLION users step by step:
+There's a client sending requests. There's multiple application servers (suppose S1, S2, S3) where the requests are going. The Load Balancer distributes the traffic to the servers accordingly. Load Balancer talks to the servers through a private IP which offers security as well. Now, if any of the server fails, the Load Balancer will route the traffic in the remaining servers, in this way the application won't go down. Now, there's DBs, DB replications are there, one master DB and multiple slave DBs. The application servers writes to the master DB and the slave DBs replicates the master DB and they are read-only. If the master DB goes down, one of the slave DB becomes the master DB. Now Cache comes into picture. Communicating with the DB is expensive, so to avoid involving DB for every operation there is cache which has some data stored. So before the application server goes to the DB, first it checks the cache for the data, if the data is available in cache, it takes from there and there is no need to communicate with the DB. If it's not present in the cache then it writes the data to the DB and cache takes it to it's storage. When the application sets up cache, it defines TTL(Time to live).
+Then comes CDN that stands for Content Delivery Network. CDN does caching but all that does caching are not CDN. Suppose there's a Data Center located in India and you are also accessing the Data Center from India. Suppose the Data Center is accessed by other countries as well. So based on the distance of the country from the data center, the response may take that much time to reach to that country. So CDN solves that problem.
+So for the users from other countries, CDN node is set up in the respective countries these CDN nodes do the caching of static data (static data means HTML/videos/CSS etc, which don't change much). So the request first goes to the CDN node to check for the required data availability, if it's not available then it goes to the neighboring CDN node, if not found then only it goes to the Data Center to fetch the data. This way, it saves the response time as well as it provides security to the DB Data Center as well.
+Looking from the above initial steps, CDN comes into picture even before the client sends request to the Load Balancer. First the client checks for the data in the CDN Node and it's neighbouring nodes, if not present, then only it sends the request to the Load Balancer and the Load Balancer sends the request to the application servers and the further process goes on as explained above.
+Now, for all the regions there can be data centers as well, so that if a data center goes down, the load will be distributed to other data centers. Data replication happens in Data Centers. So if a US client sends a request to the US data center and it has gone down, so he'll get the response from any other region's data center.
+Then comes Database Scaling, which has 2 types, Vertical Scaling and Horizontal Scaling. In Vertical Scaling we increase the CPU and RAM capacity of the database. But it's drawback is that the capacity has a limit after which it can't be increased. In Horizontal Scaling, the databases are increased in number. There are two types of implementation in horizontal scaling, vertical and horizontal. This implementation is called Sharding. In Vertical implementation, for example if there are 1000 rows in a table, then that table is divided into multiple tables by dividing the tables based on the categories. The same thing is done in horizontal implementation with columns.
+
+
+CONSISTENT HASHING:
+There are either load balanced app servers or DB nodes where the traffic goes, so when a key is sent to the hash function it generates a code and that code%size of the nodes gives the index or the node where the key will be placed. In short, hashing is used to decide the placing of the key in the node. But Hashing only works when the size of the nodes is static. If it changes (becomes dynamic) then the current position of the key might change resulting in the need of rebalancing. So to avoid this difficulty and perform rebalancing smoothly, we perform Consistent Hashing. To perform rebalancing, we use the formula (1/n)%no of keys where n -> no of nodes. This formula will give us the number of nodes that needs to be created as a replication of the actual nodes which will help to rebalance the keys or traffic equally.
+
+What is Consistent Hashing?
+Consistent Hashing is a hashing technique used in distributed systems to evenly distribute data (like keys, cache entries, or requests) across multiple servers/nodes in a way that:
+Minimizes re-distribution of data when nodes are added/removed.
+Balances load across all available nodes.
+It was first used in DynamoDB, Cassandra, Memcached, and load balancers.
+🔹 Problem with Normal Hashing
+In a typical system:
+You hash the key and then use mod N (where N = number of servers).
+Example: server = hash(key) % N.
+👉 Issue:
+If the number of servers changes (say from 4 → 5), almost all keys get remapped, which is very inefficient.
+🔹 How Consistent Hashing Solves This
+Instead of mod N, consistent hashing places both servers and keys on a ring.
+Imagine a circular hash space (0 to 2³² – 1).
+Each server is assigned a random position on the circle (using a hash of its ID).
+Each key is also hashed to a position on the circle.
+A key is stored on the first server clockwise from its position.
+👉 When a server is added/removed:
+Only the keys between the affected server and its predecessor need to be remapped.
+Not the entire dataset.
+🔹 Example
+Say we have 3 servers: S1, S2, S3.
+Ring positions:
+S1 → hash(S1) = 10
+S2 → hash(S2) = 40
+S3 → hash(S3) = 70
+A key with hash(key) = 55 → goes to S3.
+A key with hash(key) = 15 → goes to S2.
+👉 If S2 crashes, only keys that belonged to S2 get reassigned to S3. Others stay intact.
+🔹 Virtual Nodes (Improvement)
+Sometimes servers don’t get evenly spaced on the ring, leading to imbalance.
+To fix this, each physical server is assigned multiple virtual nodes at different points on the ring.
+This ensures better load balancing.
+Example:
+Instead of just S1 → position 10, also place S1a → 30, S1b → 90.
+Keys now distribute more evenly.
+🔹 Real-World Uses
+Distributed Caches (Memcached, Redis Cluster)
+Keys spread evenly across servers.
+Adding/removing cache nodes doesn’t invalidate all cached data.
+Databases (Cassandra, DynamoDB, Riak)
+Data partitioning across cluster nodes.
+Load Balancers (NGINX, Akamai, etc.)
+Routing requests to backend servers consistently.
+Kafka
+Topic partitions → brokers are often managed using consistent hashing principles.
+🔹 Interview-Level Recap
+Normal hashing problem: Adding/removing servers reassigns almost all keys.
+Consistent hashing solution: Arrange servers + keys on a ring, assign key to nearest clockwise server.
+Benefit: Only a small portion of keys are reassigned when servers change.
+Virtual nodes: Improve load distribution.
+Used in: Caches, DBs, load balancers, Kafka.
+
+
+URL Shortening Service like TinyURL:
+There are very long URLs generally and we can shorten it. For example, when we put some URL in LinkedIn, it shortens it.
+How to shorten it.
+Suppose the shortened URL is like:
+https://customers/jkhGbThk
+Here, 8 fields are being used, so how do we decide the number of fields.
+Suppose 10M traffic comes per day, so per year it will be 3650M traffic, and if we want to handle the traffic for 100 years then it will be 365000M -> 3.6B traffic.
+Now, we can ask the interviewer that how many sets of characters we can use and if he says from 0-9, a-z and A-Z -> 10, 26, 26 that sums up to be 62 characters.
+So we can use a combination of 62 characters. So we have to take that much combination of characters that can cover up the 3.6B traffic.
+So, if we take 1 field, it will take 62 characters.
+2 fields -> 62^2
+3 fields -> 62^3
+.
+.
+.
+7 fields -> 62^7 = 3.5 trillion -> so this can cover up 3.6B traffic.
+So we can use 7 characters for our URL.
+TO BE CONTINUED....
+
+
+Back-of-the-Envelope Estimation:
+BOE Estimation drives our decision for the System Design. When we design a system by taking Load Balancer, CDN, Cache, Servers, DB etc. we must also know what and how much resource is required for the design instead of just including all resources which will result in the wastage of resources. For that purpose we use BOE Estimation.
+3 things we compute basically:
+1) No of servers
+2) RAM
+3) Storage Capacity
+And at last we define the Trade-off from CAP Theorem.
+
+Cheat Sheet to calculate the Storage Capacity:
+          |   Traffic     | Storage
+3 zeroes  |   Thousand    |   KB
+6 zeroes  |   Million     |   MB
+9 zeroes  |   Billion     |   GB
+12 zeroes |   Trillion    |   TB
+15 zeroes |   Quadrillion |   PB
+
+Calculation Example:
+X million users * Y MB = XY TB
+  (6 zeroes)  *  (6 zeroes)  =  (12 zeroes -> TB)
+  
+5 Million users * 2 KB = 10 GB storage
