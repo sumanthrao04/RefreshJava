@@ -1,5 +1,5 @@
 1.How do you remove duplicate elements from a list using Java 8 streams?
-*** remove duplicate object is pending
+remove duplicate object is pending
 distinct(): Keeps only unique elements by comparing them using equals() and hashCode().
 Internally, distinct() uses a HashSet to track seen elements.
 Time Complexity:
